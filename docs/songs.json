@@ -1,0 +1,94 @@
+[
+  {
+    "id": 1,
+    "title": "Navjaxx - Embrace",
+    "artist": "Navjaxx",
+    "mood": "Chill",
+    "audio_url": "backend/music/Navjaxx - Embrace (4K Official Music Video) - Navjaxx.mp3"
+  },
+  {
+    "id": 2,
+    "title": "Navjaxx, VXLLAIN - Distant Memories",
+    "artist": "Navjaxx & VXLLAIN",
+    "mood": "Chill",
+    "audio_url": "backend/music/Navjaxx, VXLLAIN - Distant Memories (4K Official Music Video) - Navjaxx.mp3"
+  },
+  {
+    "id": 3,
+    "title": "Mr.Kitty - After Dark (Slowed + Rain Effect)",
+    "artist": "Ava Rinzler",
+    "mood": "Chill",
+    "audio_url": "backend/music/Mr.Kitty - After Dark (Slowed to Perfection + Rain Effect) - Ava Rinzler.mp3"
+  },
+  {
+    "id": 4,
+    "title": "VØJ, Narvent - Memory Reboot",
+    "artist": "VØJ & Narvent",
+    "mood": "Focus",
+    "audio_url": "backend/music/VØJ, Narvent - Memory Reboot (4K Music Video) - Narvent.mp3"
+  },
+  {
+    "id": 5,
+    "title": "20 Minutes of Calm and Inspiring Funk / Best Aura Phonk Music Brazilian Phonk Remix",
+    "artist": "MironN",
+    "mood": "Focus",
+    "audio_url": "backend/music/20 Minutes of Calm and Inspiring Fonk  Best Aura  Phonk music  Brazilian Phonk remix - MironN.mp3"
+  },
+  {
+    "id": 6,
+    "title": "Activate Your Brain Potential / 30 minutes deep focus / BrainSync",
+    "artist": "BrainSync",
+    "mood": "Focus",
+    "audio_url": "backend/music/Activate Your Brain Potential  30 minutes deep focus  Improve Memory & Intelligence - BrainSync Focus Music.mp3"
+  },
+  {
+    "id": 7,
+    "title": "AIRTEL PHONK",
+    "artist": "Mashuq Haque",
+    "mood": "Energetic",
+    "audio_url": "backend/music/AIRTEL PHONK - Mashuq Haque.mp3"
+  },
+  {
+    "id": 8,
+    "title": "Nonstop Arijit Singh Mashup / Lofi Boy",
+    "artist": "Lofi Boy",
+    "mood": "Night",
+    "audio_url": "backend/music/Nonstop Arjit Singh Mashup  Remix  Saturday Special  Lofi Boy - Lofi boy (1).mp3"
+  },
+  {
+    "id": 9,
+    "title": "Late Night - (EA7) SAD CHILL Lofi Piano Beat",
+    "artist": "Rude Boy",
+    "mood": "Night",
+    "audio_url": "backend/music/Late Night - (EA7) SAD CHILL Lofi Piano Beat - Rude Boy.mp3"
+  },
+  {
+    "id": 10,
+    "title": "1 Hour Of Night Hindi Lofi Songs To Study / Chill / Relax / Refreshing",
+    "artist": "indianmusicalvideos",
+    "mood": "Night",
+    "audio_url": "backend/music/1 Hour Of Night Hindi Lofi Songs To Study _Chill _Relax _Refreshing - indianmusicalvideos.mp3"
+  },
+  {
+    "id": 11,
+    "title": "Stellar Fission / Oppenheimer X Interstellar Music Mix",
+    "artist": "SuperImpose",
+    "mood": "Happy",
+    "audio_url": "backend/music/Stellar Fission  Oppenheimer X Interstellar Music Mix - SuperImpose.mp3"
+  },
+  {
+    "id": 12,
+    "title": "Happy Nation Phonk",
+    "artist": "x3L",
+    "mood": "Happy",
+    "audio_url": "backend/music/Happy Nation Phonk - x3L.mp3"
+  },
+  {
+    "id": 13,
+    "title": "Distant Echoes (Slowed + Reverb)",
+    "artist": "VXLLAIN",
+    "mood": "Sad",
+    "audio_url": "backend/music/Distant Echoes (Slowed + Reverb) - VXLLAIN.mp3"
+  }
+]
+

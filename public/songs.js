@@ -1,0 +1,1283 @@
+window.allLocalSongs = [
+  {
+    "id": 1,
+    "title": "Navjaxx - Embrace",
+    "artist": "Navjaxx",
+    "mood": "Chill",
+    "audio_url": "backend/music/Navjaxx - Embrace (4K Official Music Video) - Navjaxx.mp3"
+  },
+  {
+    "id": 2,
+    "title": "Navjaxx, VXLLAIN - Distant Memories",
+    "artist": "Navjaxx & VXLLAIN",
+    "mood": "Chill",
+    "audio_url": "backend/music/Navjaxx, VXLLAIN - Distant Memories (4K Official Music Video) - Navjaxx.mp3"
+  },
+  {
+    "id": 3,
+    "title": "Mr.Kitty - After Dark",
+    "artist": "Ava Rinzler",
+    "mood": "Night",
+    "audio_url": "backend/music/Mr.Kitty - After Dark (Slowed to Perfection + Rain Effect) - Ava Rinzler.mp3"
+  },
+  {
+    "id": 4,
+    "title": "VØJ, Narvent - Memory Reboot",
+    "artist": "VØJ & Narvent",
+    "mood": "Chill",
+    "audio_url": "backend/music/VOJ, Narvent - Memory Reboot (4K Music Video) - Narvent.mp3"
+  },
+  {
+    "id": 5,
+    "title": "20 Minutes of Calm and Inspiring Funk Best Aura Phonk Music Brazilian Phonk Remix",
+    "artist": "MironN",
+    "mood": "Night",
+    "audio_url": "backend/music/20 Minutes of Calm and Inspiring Fonk  Best Aura  Phonk music  Brazilian Phonk remix - MironN.mp3"
+  },
+  {
+    "id": 6,
+    "title": "Activate Your Brain Potential 30 minutes deep focus BrainSync",
+    "artist": "BrainSync",
+    "mood": "Focus",
+    "audio_url": "backend/music/Activate Your Brain Potential  30 minutes deep focus  Improve Memory & Intelligence - BrainSync Focus Music.mp3"
+  },
+  {
+    "id": 7,
+    "title": "AIRTEL PHONK",
+    "artist": "Mashuq Haque",
+    "mood": "Night",
+    "audio_url": "backend/music/AIRTEL PHONK - Mashuq Haque.mp3"
+  },
+  {
+    "id": 8,
+    "title": "Nonstop Arijit Singh Mashup Lofi Boy",
+    "artist": "Lofi Boy",
+    "mood": "Chill",
+    "audio_url": "backend/music/Nonstop Arjit Singh Mashup  Remix  Saturday Special  Lofi Boy - Lofi boy (1).mp3"
+  },
+  {
+    "id": 9,
+    "title": "Late Night - SAD CHILL Lofi Piano Beat",
+    "artist": "Rude Boy",
+    "mood": "Focus",
+    "audio_url": "backend/music/Late Night - (EA7) SAD CHILL Lofi Piano Beat - Rude Boy.mp3"
+  },
+  {
+    "id": 10,
+    "title": "1 Hour Of Night Hindi Lofi Songs To Study Chill Relax Refreshing",
+    "artist": "indianmusicalvideos",
+    "mood": "Focus",
+    "audio_url": "backend/music/1 Hour Of Night Hindi Lofi Songs To Study _Chill _Relax _Refreshing - indianmusicalvideos.mp3"
+  },
+  {
+    "id": 11,
+    "title": "Stellar Fission Oppenheimer X Interstellar Music Mix",
+    "artist": "SuperImpose",
+    "mood": "Chill",
+    "audio_url": "backend/music/Stellar Fission  Oppenheimer X Interstellar Music Mix - SuperImpose.mp3"
+  },
+  {
+    "id": 12,
+    "title": "Happy Nation Phonk",
+    "artist": "x3L",
+    "mood": "Night",
+    "audio_url": "backend/music/Happy Nation Phonk - x3L.mp3"
+  },
+  {
+    "id": 13,
+    "title": "Distant Echoes",
+    "artist": "VXLLAIN",
+    "mood": "Night",
+    "audio_url": "backend/music/Distant Echoes (Slowed + Reverb) - VXLLAIN.mp3"
+  },
+  {
+    "id": 14,
+    "title": "ButtaBomma Allu Arjun Thaman S Armaan Malik",
+    "artist": "AlaVaikunthapurramuloo",
+    "mood": "Chill",
+    "audio_url": "backend/music/#AlaVaikunthapurramuloo - ButtaBomma Full Video Song (4K)  Allu Arjun  Thaman S  Armaan Malik.mp3"
+  },
+  {
+    "id": 15,
+    "title": "2 Phut Hon",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/2 Phut Hon(AVOIZE Remix).mp3"
+  },
+  {
+    "id": 16,
+    "title": "24kGoldn Mood ft Iann Dior",
+    "artist": "MoodWave Artist",
+    "mood": "Chill",
+    "audio_url": "backend/music/9convert.com - 24kGoldn  Mood Lyrics ft Iann Dior_1080p.mp3"
+  },
+  {
+    "id": 17,
+    "title": "Diet Pepsi",
+    "artist": "Addison Rae",
+    "mood": "Chill",
+    "audio_url": "backend/music/Addison Rae - Diet Pepsi (Lyrics).mp3"
+  },
+  {
+    "id": 18,
+    "title": "Unforgettable NEIMY & NSH",
+    "artist": "Aerreo",
+    "mood": "Chill",
+    "audio_url": "backend/music/Aerreo - Unforgettable (Lyrics) feat. NEIMY & NSH.mp3"
+  },
+  {
+    "id": 19,
+    "title": "Dil Bechara",
+    "artist": "Afreeda",
+    "mood": "Sad",
+    "audio_url": "backend/music/Afreeda - Dil Bechara.mp3"
+  },
+  {
+    "id": 20,
+    "title": "On My Way",
+    "artist": "Alan Walker, Sabrina Carpenter & Farruko",
+    "mood": "Chill",
+    "audio_url": "backend/music/Alan Walker, Sabrina Carpenter & Farruko - On My Way (Lyrics).mp3"
+  },
+  {
+    "id": 21,
+    "title": "Let Me Down Slowly",
+    "artist": "Alec Benjamin",
+    "mood": "Sad",
+    "audio_url": "backend/music/Alec Benjamin - Let Me Down Slowly (Lyrics).mp3"
+  },
+  {
+    "id": 22,
+    "title": "Free Fire World Series 2021 Singapore",
+    "artist": "All In",
+    "mood": "Energetic",
+    "audio_url": "backend/music/All In - Lyric Video Free Fire World Series 2021 Singapore.mp3"
+  },
+  {
+    "id": 23,
+    "title": "Theme Extended",
+    "artist": "Ant-Man",
+    "mood": "Chill",
+    "audio_url": "backend/music/Ant-Man - Theme Extended.mp3"
+  },
+  {
+    "id": 24,
+    "title": "Avengers",
+    "artist": "London Music Works",
+    "mood": "Chill",
+    "audio_url": "backend/music/avengers-theme-song-download.mp3"
+  },
+  {
+    "id": 25,
+    "title": "Waiting For Love",
+    "artist": "Avicii",
+    "mood": "Chill",
+    "audio_url": "backend/music/Avicii - Waiting For Love.mp3"
+  },
+  {
+    "id": 26,
+    "title": "Your eyes teri nazron ne X your eyes got my heart falling for you",
+    "artist": "Barney Sku",
+    "mood": "Chill",
+    "audio_url": "backend/music/Barney Sku - Your eyes (Lyrics) teri nazron ne X your eyes got my heart falling for you.mp3"
+  },
+  {
+    "id": 27,
+    "title": "Ta Ta Ta",
+    "artist": "Bayanni",
+    "mood": "Chill",
+    "audio_url": "backend/music/Bayanni - Ta Ta Ta (Official Lyric Audio).mp3"
+  },
+  {
+    "id": 28,
+    "title": "Otilia@OtiliaBilioneraOfficial songlove",
+    "artist": "Bilionera",
+    "mood": "Chill",
+    "audio_url": "backend/music/Bilionera - Otilia ( Lyrics )@OtiliaBilioneraOfficial #song#lyrics#love.mp3"
+  },
+  {
+    "id": 29,
+    "title": "Lovely Bleedingxhe",
+    "artist": "Billie Eilish",
+    "mood": "Sad",
+    "audio_url": "backend/music/Billie_Eilish_-_Lovely_Bleedingxhe_(getmp3.pro).mp3"
+  },
+  {
+    "id": 30,
+    "title": "WHISTLE - Karaoke Easy",
+    "artist": "BLACKPINK",
+    "mood": "Chill",
+    "audio_url": "backend/music/BLACKPINK_-_WHISTLE_-_Karaoke_Easy_(getmp3.pro).mp3"
+  },
+  {
+    "id": 31,
+    "title": "Oh No",
+    "artist": "Capone",
+    "mood": "Chill",
+    "audio_url": "backend/music/Capone - Oh No (Lyrics).mp3"
+  },
+  {
+    "id": 32,
+    "title": "Hymn For The Weekend",
+    "artist": "Coldplay",
+    "mood": "Chill",
+    "audio_url": "backend/music/Coldplay - Hymn For The Weekend (Official Video).mp3"
+  },
+  {
+    "id": 33,
+    "title": "Barbaadiyan Shiddat Sunny KRadhika M Sachet TNikhita G Madhubanti BSachin -Jigar",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_Barbaadiyan (Full Video) Shiddat Sunny KRadhika M Sachet TNikhita G Madhubanti BSachin -Jigar.mp3"
+  },
+  {
+    "id": 34,
+    "title": "Hours 002",
+    "artist": "Convert Josh Makazo",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_Josh Makazo - Hours (Official Music Video)_002.mp3"
+  },
+  {
+    "id": 35,
+    "title": "Kar Gayi Chull",
+    "artist": "Badshah, Amaal Mallik, Fazilpuria, Sukriti Kakar & Neha Kakkar",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Convert_Kar Gayi Chull - Kapoor & Sons _ Sidharth Malhotra _ Alia Bhatt _ Badshah _ Amaal Mallik _Fazilpuria.mp3"
+  },
+  {
+    "id": 36,
+    "title": "KATSEYE",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_KATSEYE (캣츠아이)  Touch  Official MV (1).mp3"
+  },
+  {
+    "id": 37,
+    "title": "Cheri Cheri Lady",
+    "artist": "Modern Talking",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_Modern Talking - Cheri Cheri Lady (Lyrics).mp3"
+  },
+  {
+    "id": 38,
+    "title": "I'm on Fire",
+    "artist": "Garena Free Fire & Trap",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Convert_Official Music Video_ _I'm on Fire_ - T.R.A.P. (ft BJRNCK Awich Krawk Faruz Feet ).mp3"
+  },
+  {
+    "id": 39,
+    "title": "Oonchi Oonchi Deewarein MeezaanAnaswara Arijit Singh Manan RadhikaVinay Bhushan K",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_Oonchi Oonchi Deewarein (Full Video)_ MeezaanAnaswara _Arijit Singh Manan _RadhikaVinay_Bhushan K.mp3"
+  },
+  {
+    "id": 40,
+    "title": "Clear Mothica Shawn Wasabi tiktok remix Musicallynewocl noordabashh catboiheaven",
+    "artist": "Convert Pusher",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_Pusher - Clear ft. Mothica Shawn Wasabi tiktok remix _ Musicallynewocl _ noordabashh _ catboiheaven.mp3"
+  },
+  {
+    "id": 41,
+    "title": "Aasa Kooda Thejo Bharathwaj Preity Mukundhan Sai Smriti",
+    "artist": "Convert Sai Abhyankkar",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_Sai Abhyankkar - Aasa Kooda (Music Video) _ Thejo Bharathwaj _ Preity Mukundhan _ Sai Smriti.mp3"
+  },
+  {
+    "id": 42,
+    "title": "The Machine",
+    "artist": "Reed Wonder & Aurora Olivas",
+    "mood": "Chill",
+    "audio_url": "backend/music/Convert_The Machine (Sped Up).mp3"
+  },
+  {
+    "id": 43,
+    "title": "Speechless",
+    "artist": "Dan + Shay",
+    "mood": "Chill",
+    "audio_url": "backend/music/Dan + Shay - Speechless (Icon Video).mp3"
+  },
+  {
+    "id": 44,
+    "title": "Run Free Official Ly",
+    "artist": "Deep Chills",
+    "mood": "Chill",
+    "audio_url": "backend/music/Deep_Chills_-_Run_Free_Official_Ly_(getmp3.pro).mp3"
+  },
+  {
+    "id": 45,
+    "title": "Cool for the Summer",
+    "artist": "Demi Lovato",
+    "mood": "Chill",
+    "audio_url": "backend/music/Demi Lovato - Cool for the Summer (Official Video).mp3"
+  },
+  {
+    "id": 46,
+    "title": "Sugar & Brownies",
+    "artist": "DHARIA",
+    "mood": "Happy",
+    "audio_url": "backend/music/DHARIA - Sugar & Brownies (by Monoir) [Official Video].mp3"
+  },
+  {
+    "id": 47,
+    "title": "lady gaga, bruno mars",
+    "artist": "die with a smile",
+    "mood": "Happy",
+    "audio_url": "backend/music/die with a smile (tiktok versionbest part!) - lady gaga, bruno mars [edit audio].mp3"
+  },
+  {
+    "id": 48,
+    "title": "Title Song",
+    "artist": "Dil Bechara",
+    "mood": "Sad",
+    "audio_url": "backend/music/Dil Bechara - Title Song.mp3"
+  },
+  {
+    "id": 49,
+    "title": "Vacation",
+    "artist": "Dirty Heads",
+    "mood": "Happy",
+    "audio_url": "backend/music/Dirty Heads - Vacation (Lyric Video).mp3"
+  },
+  {
+    "id": 50,
+    "title": "You've Got a Friend In Me",
+    "artist": "Randy Newman",
+    "mood": "Chill",
+    "audio_url": "backend/music/Disney s Toy Story-You ve Got a Friend in Me with.mp3"
+  },
+  {
+    "id": 51,
+    "title": "One More Round Garena Free Fire",
+    "artist": "DJ KSHMR, Jeremy Oceans",
+    "mood": "Energetic",
+    "audio_url": "backend/music/DJ KSHMR, Jeremy Oceans - One More Round (Free Fire Booyah Day Theme Song) Garena Free Fire.mp3"
+  },
+  {
+    "id": 52,
+    "title": "Dress",
+    "artist": "Taylor Swift",
+    "mood": "Chill",
+    "audio_url": "backend/music/DRESS!.mp3"
+  },
+  {
+    "id": 53,
+    "title": "Rise Up 2",
+    "artist": "Egzod",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Egzod - Rise Up (ft. Veronica Bravo & M.I.M.E) [NCS Release]_2.mp3"
+  },
+  {
+    "id": 54,
+    "title": "No Rival",
+    "artist": "Egzod Maestro Chives & Alaina Cross",
+    "mood": "Chill",
+    "audio_url": "backend/music/Egzod Maestro Chives & Alaina Cross - No Rival [Official Lyric Video].mp3"
+  },
+  {
+    "id": 55,
+    "title": "Middle of the Night",
+    "artist": "Elley Duhé",
+    "mood": "Night",
+    "audio_url": "backend/music/Elley Duhé - Middle of the Night (Nitti Gritti Remix).mp3"
+  },
+  {
+    "id": 56,
+    "title": "dress Ultra slowed +) Reverb",
+    "artist": "eternxlkz",
+    "mood": "Night",
+    "audio_url": "backend/music/eternxlkz - dress Ultra slowed +) Reverb.mp3"
+  },
+  {
+    "id": 57,
+    "title": "FORCE!",
+    "artist": "Eternxlkz",
+    "mood": "Chill",
+    "audio_url": "backend/music/Eternxlkz - FORCE! (Official Audio).mp3"
+  },
+  {
+    "id": 58,
+    "title": "Feeling the Fire",
+    "artist": "Garena Free Fire",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Feeling the Fire (Free Fire 7th Anniversary) (320).mp3"
+  },
+  {
+    "id": 59,
+    "title": "For the First Time in Forever",
+    "artist": "Kristen Bell & Idina Menzel",
+    "mood": "Chill",
+    "audio_url": "backend/music/For the First Time in Forever (Disney s Frozen).mp3"
+  },
+  {
+    "id": 60,
+    "title": "Ghungroo",
+    "artist": "Vishal & Shekhar, Arijit Singh & Shilpa Rao",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Free Fire Holi Music Video ft. Hrithik Roshan Song DNA Mein Dance By Vishal & Shekhar.mp3"
+  },
+  {
+    "id": 61,
+    "title": "Free Fire World Series Theme",
+    "artist": "Garena Free Fire",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Free Fire World Series Theme (2022 Bangkok).mp3"
+  },
+  {
+    "id": 62,
+    "title": "Free Fire x Alok Vale Vale Music Video",
+    "artist": "Various Artists",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Free Fire x Alok Vale Vale Music Video.mp3"
+  },
+  {
+    "id": 63,
+    "title": "Reunion",
+    "artist": "Alok, Dimitri Vegas & Like Mike & KSHMR",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Freefire Anniversary.mp3"
+  },
+  {
+    "id": 64,
+    "title": "Dil Bechara",
+    "artist": "Friendzone",
+    "mood": "Sad",
+    "audio_url": "backend/music/Friendzone - Dil Bechara.mp3"
+  },
+  {
+    "id": 65,
+    "title": "Street Dancer 3D - Varun D - Siddharth B, Jubin N,Sachin-Jigar",
+    "artist": "Bezubaan Kab Se",
+    "mood": "Chill",
+    "audio_url": "backend/music/Full Song - Bezubaan Kab Se - Street Dancer 3D - Varun D - Siddharth B, Jubin N,Sachin-Jigar.mp3"
+  },
+  {
+    "id": 66,
+    "title": "Moana",
+    "artist": "G-Eazy, Jack Harlow",
+    "mood": "Chill",
+    "audio_url": "backend/music/G-Eazy, Jack Harlow - Moana (Official Video).mp3"
+  },
+  {
+    "id": 67,
+    "title": "Garena Free Fire One Man Panch New Update",
+    "artist": "Various Artists",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Garena Free Fire One Man Panch New Update (Theme Song ).mp3"
+  },
+  {
+    "id": 68,
+    "title": "February OB26 Update 2021",
+    "artist": "New Theme Song",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Garena Free Fire OST - New Theme Song - February OB26 Update 2021 (MUST WATCH).mp3"
+  },
+  {
+    "id": 69,
+    "title": "Celebration Call",
+    "artist": "Garena Free Fire",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Garena Free Fire _ 6th Anniversary New Update ( Theme Song ).mp3"
+  },
+  {
+    "id": 70,
+    "title": "Attack on Titan",
+    "artist": "Garena Free Fire",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Garena Free Fire _ Ob27 New Update ( Theme Song ).mp3"
+  },
+  {
+    "id": 71,
+    "title": "Mclaren",
+    "artist": "Garena Free Fire",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Garena Free Fire _ The Mclaren New Update ( Theme Song ).mp3"
+  },
+  {
+    "id": 72,
+    "title": "Gurinder Seagal 190",
+    "artist": "Gf Bf",
+    "mood": "Chill",
+    "audio_url": "backend/music/Gf Bf - Gurinder Seagal 190Kbps.mp3"
+  },
+  {
+    "id": 73,
+    "title": "Heat Waves",
+    "artist": "Glass Animals",
+    "mood": "Chill",
+    "audio_url": "backend/music/Glass Animals - Heat Waves (Neovaii Remix).mp3"
+  },
+  {
+    "id": 74,
+    "title": "Gryffin-Mega-Mashup-By-Karmaxis-After-Yo 3",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Gryffin-Mega-Mashup-By-Karmaxis-After-Yo_3.mp3"
+  },
+  {
+    "id": 75,
+    "title": "Hawayein",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Hawayein (SongsMp3.Com).mp3"
+  },
+  {
+    "id": 76,
+    "title": "Arjun X Arijit Singh • Vixauds",
+    "artist": "I ll be waiting X Kabhi Jo Badal Barse",
+    "mood": "Chill",
+    "audio_url": "backend/music/I ll be waiting X Kabhi Jo Badal Barse - Arjun X Arijit Singh (Audio edit) • Vixauds.mp3"
+  },
+  {
+    "id": 77,
+    "title": "Let It Go",
+    "artist": "Idina Menzel",
+    "mood": "Chill",
+    "audio_url": "backend/music/Idina Menzel - Let It Go (from Frozen) (Official Video).mp3"
+  },
+  {
+    "id": 78,
+    "title": "iglite incoming call new",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/iglite_incoming_call_new.ogg"
+  },
+  {
+    "id": 79,
+    "title": "Alan Walker, K-391 Play, Alone, Pt. II, Unity, ...",
+    "artist": "Ignite",
+    "mood": "Chill",
+    "audio_url": "backend/music/Ignite - Alan Walker, K-391 (Lyrics) _ Play, Alone, Pt. II, Unity, ....mp3"
+  },
+  {
+    "id": 80,
+    "title": "Believer",
+    "artist": "Imagine Dragons",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Imagine Dragons - Believer (Lyrics).mp3"
+  },
+  {
+    "id": 81,
+    "title": "INDUSTRY BABY",
+    "artist": "Lil Nas X & Jack Harlow",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Industry Baby X E.T. [Lyrics] _ Lil Nas X & Katy Perry.mp3"
+  },
+  {
+    "id": 82,
+    "title": "Jawan Not Ramaiya Vastavaiya Extended Version Shah Rukh Khan Atlee Anirudh Nayanthara",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Jawan_ Not Ramaiya Vastavaiya Extended Version (Hindi)_ Shah Rukh Khan Atlee Anirudh Nayanthara.mp3"
+  },
+  {
+    "id": 83,
+    "title": "Infinity 'cause i love you for infinity'",
+    "artist": "Jaymes Young",
+    "mood": "Chill",
+    "audio_url": "backend/music/Jaymes Young - Infinity (Lyrics) 'cause i love you for infinity'.mp3"
+  },
+  {
+    "id": 84,
+    "title": "KEHLANI REMIX",
+    "artist": "Jordan Adetunji",
+    "mood": "Chill",
+    "audio_url": "backend/music/Jordan Adetunji - KEHLANI REMIX (feat. Kehlani) [Official Video].mp3"
+  },
+  {
+    "id": 85,
+    "title": "MORE Male Cover",
+    "artist": "K-DA",
+    "mood": "Chill",
+    "audio_url": "backend/music/K-DA - MORE Male Cover.mp3"
+  },
+  {
+    "id": 86,
+    "title": "Kabira",
+    "artist": "Pritam, Tochi Raina & Rekha Bhardwaj",
+    "mood": "Chill",
+    "audio_url": "backend/music/Kabira Full Song Yeh Jawaani Hai Deewani  Pritam  Ranbir Kapoor, Deepika Padukone.mp3"
+  },
+  {
+    "id": 87,
+    "title": "I m So Sorry",
+    "artist": "Kai",
+    "mood": "Chill",
+    "audio_url": "backend/music/Kai - I m So Sorry (Kung Fu Panda 3 vs Imagine Dragons).mp3"
+  },
+  {
+    "id": 88,
+    "title": "Kabir Singh 320",
+    "artist": "Kaise Hua",
+    "mood": "Chill",
+    "audio_url": "backend/music/Kaise Hua - Kabir Singh 320 Kbps.mp3"
+  },
+  {
+    "id": 89,
+    "title": "khada hu aaj bhi wahi The Local Train Uali s",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/khada hu aaj bhi wahi lyrics _ The Local Train _ Uali s Lyrics.mp3"
+  },
+  {
+    "id": 90,
+    "title": "Dil Bechara",
+    "artist": "Khulke Jeene Ka",
+    "mood": "Sad",
+    "audio_url": "backend/music/Khulke Jeene Ka - Dil Bechara.mp3"
+  },
+  {
+    "id": 91,
+    "title": "Kai's Theme",
+    "artist": "Samuel Kim",
+    "mood": "Chill",
+    "audio_url": "backend/music/Kung Fu Panda 3 Soundtrack- Kai s theme.mp3"
+  },
+  {
+    "id": 92,
+    "title": "Kung Fu Panda",
+    "artist": "Sarah Lula",
+    "mood": "Chill",
+    "audio_url": "backend/music/Kung Fu Panda Music Video.mp3"
+  },
+  {
+    "id": 93,
+    "title": "Diet Mountain Dew",
+    "artist": "Lana Del Rey",
+    "mood": "Chill",
+    "audio_url": "backend/music/Lana Del Rey - Diet Mountain Dew (Lyrics).mp3"
+  },
+  {
+    "id": 94,
+    "title": "Summertime Sadness",
+    "artist": "Lana Del Rey",
+    "mood": "Sad",
+    "audio_url": "backend/music/Lana Del Rey - Summertime Sadness (Lyrics).mp3"
+  },
+  {
+    "id": 95,
+    "title": "Legends Never Die",
+    "artist": "League of Legends Music & Against The Current",
+    "mood": "Energetic",
+    "audio_url": "backend/music/LEGENDS_NEVER_DIE_LEAGUE_OF_LEGENDS_(1).mp3"
+  },
+  {
+    "id": 96,
+    "title": "Ordinary Person Lyric Thalapathy Vijay, Anirudh Ravichander, Lokesh Kanagaraj, NikhitaGandhi",
+    "artist": "LEO",
+    "mood": "Chill",
+    "audio_url": "backend/music/LEO - Ordinary Person Lyric  Thalapathy Vijay, Anirudh Ravichander, Lokesh Kanagaraj, NikhitaGandhi.mp3"
+  },
+  {
+    "id": 97,
+    "title": "People 'did you check on me'",
+    "artist": "Libianca",
+    "mood": "Chill",
+    "audio_url": "backend/music/Libianca - People (Lyrics) 'did you check on me'.mp3"
+  },
+  {
+    "id": 98,
+    "title": "People",
+    "artist": "Libianca",
+    "mood": "Chill",
+    "audio_url": "backend/music/Libianca - People (Sped Up Lyrics).mp3"
+  },
+  {
+    "id": 99,
+    "title": "Life force x Lost in the madness",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Life force x Lost in the madness (unreleased).mp3"
+  },
+  {
+    "id": 100,
+    "title": "Tanhaji",
+    "artist": "Maay Bhavani",
+    "mood": "Chill",
+    "audio_url": "backend/music/Maay Bhavani - Tanhaji.mp3"
+  },
+  {
+    "id": 101,
+    "title": "Madhukaitava Vidhwangsi",
+    "artist": "Tushar Dutta, Trishit & Supratik Das",
+    "mood": "Chill",
+    "audio_url": "backend/music/Madhukaitava Vidhwangsi.mp3"
+  },
+  {
+    "id": 102,
+    "title": "Dil Bechara",
+    "artist": "Main Tumhara",
+    "mood": "Sad",
+    "audio_url": "backend/music/Main Tumhara - Dil Bechara.mp3"
+  },
+  {
+    "id": 103,
+    "title": "Panipat",
+    "artist": "Mard Maratha",
+    "mood": "Chill",
+    "audio_url": "backend/music/Mard Maratha - Panipat.mp3"
+  },
+  {
+    "id": 104,
+    "title": "Girls Like You Cardi B",
+    "artist": "Maroon 5",
+    "mood": "Happy",
+    "audio_url": "backend/music/Maroon 5 - Girls Like You ft. Cardi B.mp3"
+  },
+  {
+    "id": 105,
+    "title": "Guitar Cover by CallumMcGaw",
+    "artist": "Marvels Ant-Man Main Theme",
+    "mood": "Chill",
+    "audio_url": "backend/music/Marvels Ant-Man Main Theme (Christophe Beck) - Guitar Cover by CallumMcGaw.mp3"
+  },
+  {
+    "id": 106,
+    "title": "Dil Bechara",
+    "artist": "Maskhari",
+    "mood": "Sad",
+    "audio_url": "backend/music/Maskhari - Dil Bechara.mp3"
+  },
+  {
+    "id": 107,
+    "title": "kali uchis",
+    "artist": "moonlight",
+    "mood": "Night",
+    "audio_url": "backend/music/moonlight - kali uchis [edit audio].mp3"
+  },
+  {
+    "id": 108,
+    "title": "Shree Siddhivinayak Mantra And Aarti",
+    "artist": "Amitabh Bachchan",
+    "mood": "Chill",
+    "audio_url": "backend/music/Myntra.mp3"
+  },
+  {
+    "id": 109,
+    "title": "Great Big Storm",
+    "artist": "Nate Ruess",
+    "mood": "Chill",
+    "audio_url": "backend/music/Nate Ruess Great Big Storm [OFFICIAL VIDEO].mp3"
+  },
+  {
+    "id": 110,
+    "title": "Darkside",
+    "artist": "NEONI",
+    "mood": "Night",
+    "audio_url": "backend/music/NEONI - Darkside (Lyrics).mp3"
+  },
+  {
+    "id": 111,
+    "title": "Haunted House",
+    "artist": "Neoni",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Neoni - Haunted House [NCS Release].mp3"
+  },
+  {
+    "id": 112,
+    "title": "Perfect Super Slowed",
+    "artist": "NEXT",
+    "mood": "Night",
+    "audio_url": "backend/music/NEXT - Perfect Super Slowed.mp3"
+  },
+  {
+    "id": 113,
+    "title": "ncts",
+    "artist": "next!",
+    "mood": "Night",
+    "audio_url": "backend/music/next! - ncts (slowed) [edit audio].mp3"
+  },
+  {
+    "id": 114,
+    "title": "Feel this moment",
+    "artist": "Nightcore",
+    "mood": "Chill",
+    "audio_url": "backend/music/Nightcore - Feel this moment (male version remix).mp3"
+  },
+  {
+    "id": 115,
+    "title": "Life Goes On 4",
+    "artist": "Oliver Tree",
+    "mood": "Chill",
+    "audio_url": "backend/music/Oliver Tree - Life Goes On (Lyrics) (1)_4.mp3"
+  },
+  {
+    "id": 116,
+    "title": "My Once Upon a Time",
+    "artist": "Dove Cameron",
+    "mood": "Chill",
+    "audio_url": "backend/music/Once Upon a Time.mp3"
+  },
+  {
+    "id": 117,
+    "title": "Vo Williams X UNSECRET-qLCdzNbP2Rw--1650211845299",
+    "artist": "HIGHER",
+    "mood": "Chill",
+    "audio_url": "backend/music/OnlyMP3.to - HIGHER - Vo Williams X UNSECRET-qLCdzNbP2Rw-192k-1650211845299.mp3"
+  },
+  {
+    "id": 118,
+    "title": "Over the Horizon",
+    "artist": "Atmospheric Lights",
+    "mood": "Focus",
+    "audio_url": "backend/music/Over_the_Horizon.m4a"
+  },
+  {
+    "id": 119,
+    "title": "Pathaan’s Theme",
+    "artist": "Sanchit Balhara, Ankit Balhara & Magdalena Supel",
+    "mood": "Chill",
+    "audio_url": "backend/music/Pathaan's Theme _ Shah Rukh Khan _ Sanchit, Ankit _ Kit Bee _ Magdalena Supel _ YRF Spy Universe.mp3"
+  },
+  {
+    "id": 120,
+    "title": "Feel This Moment Christina Aguilera",
+    "artist": "Pitbull",
+    "mood": "Chill",
+    "audio_url": "backend/music/Pitbull - Feel This Moment ft. Christina Aguilera.mp3"
+  },
+  {
+    "id": 121,
+    "title": "Sture Zutterberg",
+    "artist": "REVIVE",
+    "mood": "Chill",
+    "audio_url": "backend/music/REVIVE (Hallman Remix) - Sture Zutterberg (LYRICS).mp3"
+  },
+  {
+    "id": 122,
+    "title": "Revive",
+    "artist": "Revive by Sture Zetterberg",
+    "mood": "Chill",
+    "audio_url": "backend/music/Revive [Hallman Remix] by Sture Zetterberg - [House Music].mp3"
+  },
+  {
+    "id": 123,
+    "title": "Lemonade",
+    "artist": "Internet Money, Don Toliver, Roddy Ricch & Robin S.",
+    "mood": "Sad",
+    "audio_url": "backend/music/Roses x The Box x No Idea x Lovely (Imanbek x Don Toliver x Roddy Rich x Billie Eillish )[Mix].mp3"
+  },
+  {
+    "id": 124,
+    "title": "Espresso",
+    "artist": "Sabrina Carpenter",
+    "mood": "Happy",
+    "audio_url": "backend/music/Sabrina Carpenter - Espresso (Espressooooo Version) [Official Audio].mp3"
+  },
+  {
+    "id": 125,
+    "title": "Sample Audio",
+    "artist": "Rans Musiq",
+    "mood": "Chill",
+    "audio_url": "backend/music/Sample audio.mp3"
+  },
+  {
+    "id": 126,
+    "title": "Safari",
+    "artist": "Serena",
+    "mood": "Chill",
+    "audio_url": "backend/music/Serena - Safari (Official Video) (320 kbps).mp3"
+  },
+  {
+    "id": 127,
+    "title": "dead to me",
+    "artist": "sex whales & fraxo",
+    "mood": "Night",
+    "audio_url": "backend/music/sex whales & fraxo - dead to me  ( slow + reverb ).mp3"
+  },
+  {
+    "id": 128,
+    "title": "Tanhaji",
+    "artist": "Shankara Re Shankara",
+    "mood": "Chill",
+    "audio_url": "backend/music/Shankara Re Shankara - Tanhaji.mp3"
+  },
+  {
+    "id": 129,
+    "title": "Señorita",
+    "artist": "Shawn Mendes & Camila Cabello",
+    "mood": "Happy",
+    "audio_url": "backend/music/Shawn Mendes, Camila Cabello – Señorita.mp3"
+  },
+  {
+    "id": 130,
+    "title": "shubaarambh",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/shubaarambh [edit audio].mp3"
+  },
+  {
+    "id": 131,
+    "title": "Sona Kitna Sona Hai",
+    "artist": "Udit Narayan & Poornima",
+    "mood": "Chill",
+    "audio_url": "backend/music/Sona Kitna Sona Hai.mp3"
+  },
+  {
+    "id": 132,
+    "title": "Soni Soni Is Vishk Rebound Rohit Saraf, Pashmina @DarshanRavalDZ@jonitamusic, Rochak,Gurpreet",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/Soni Soni  Ishq Vishk Rebound  Rohit Saraf, Pashmina @DarshanRavalDZ@jonitamusic, Rochak,Gurpreet.mp3"
+  },
+  {
+    "id": 133,
+    "title": "Cradles",
+    "artist": "Sub Urban",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Sub Urban - Cradles [Official Music Video].mp3"
+  },
+  {
+    "id": 134,
+    "title": "The Man",
+    "artist": "Taylor Swift",
+    "mood": "Happy",
+    "audio_url": "backend/music/Taylor Swift - The Man.mp3"
+  },
+  {
+    "id": 135,
+    "title": "Lofi Arijit Singh Girl I Need You",
+    "artist": "Teri Dhadkan Se Meri Dhadkan Ab Judne Lagi",
+    "mood": "Night",
+    "audio_url": "backend/music/Teri Dhadkan Se Meri Dhadkan Ab Judne Lagi - [Slowed  Reverb] Lofi  Arijit Singh  Girl I Need You.mp3"
+  },
+  {
+    "id": 136,
+    "title": "SOTYAlia Bhatt,Sidharth Malhotra,Varun DhawanSunidhi Chauhan",
+    "artist": "The Disco Song",
+    "mood": "Chill",
+    "audio_url": "backend/music/The Disco Song Full Song - SOTYAlia Bhatt,Sidharth Malhotra,Varun DhawanSunidhi Chauhan.mp3"
+  },
+  {
+    "id": 137,
+    "title": "Dil Bechara",
+    "artist": "The Horizon of Saudade",
+    "mood": "Sad",
+    "audio_url": "backend/music/The Horizon of Saudade - Dil Bechara.mp3"
+  },
+  {
+    "id": 138,
+    "title": "The Machine",
+    "artist": "Reed Wonder & Aurora Olivas",
+    "mood": "Chill",
+    "audio_url": "backend/music/The Machine.mp3"
+  },
+  {
+    "id": 139,
+    "title": "Rise Up",
+    "artist": "TheFatRat",
+    "mood": "Energetic",
+    "audio_url": "backend/music/TheFatRat - Rise Up (Lyrics).mp3"
+  },
+  {
+    "id": 140,
+    "title": "Fly Away",
+    "artist": "TheFatRat",
+    "mood": "Energetic",
+    "audio_url": "backend/music/TheFatRat-Fly-Away-feat-Anjulie_1.mp3"
+  },
+  {
+    "id": 141,
+    "title": "Theme from Ant-Man",
+    "artist": "Christophe Beck",
+    "mood": "Chill",
+    "audio_url": "backend/music/Theme from Ant-Man.mp3"
+  },
+  {
+    "id": 142,
+    "title": "Tanhaji",
+    "artist": "Tinak Tinak",
+    "mood": "Chill",
+    "audio_url": "backend/music/Tinak Tinak - Tanhaji.mp3"
+  },
+  {
+    "id": 143,
+    "title": "Tokyo Drift",
+    "artist": "Teriyaki Boyz",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Tokyo Drift & Sean Paul Temperature [REMIX] _ Fast And Furious 8 (Final Battle).mp3"
+  },
+  {
+    "id": 144,
+    "title": "Top 100 Songs 2020 - Most Popular English Songs 2020",
+    "artist": "Top Songs April 2020",
+    "mood": "Chill",
+    "audio_url": "backend/music/Top Songs April 2020 - Top 100 Songs 2020 - Most Popular English Songs 2020.mp3"
+  },
+  {
+    "id": 145,
+    "title": "Music Video Chithha Siddharth Santhosh Narayanan Deeraj Vaidy Etaki",
+    "artist": "Unakku Thaan",
+    "mood": "Chill",
+    "audio_url": "backend/music/Unakku Thaan - Music Video _ Chithha _ Siddharth _ Santhosh Narayanan _ Deeraj Vaidy _ Etaki.mp3"
+  },
+  {
+    "id": 146,
+    "title": "Mortals Slowed + Reverb Bass Boosted",
+    "artist": "Warriyo",
+    "mood": "Night",
+    "audio_url": "backend/music/Warriyo - Mortals __ Slowed + Reverb __ Bass Boosted.mp3"
+  },
+  {
+    "id": 147,
+    "title": "We Win",
+    "artist": "Garena Free Fire",
+    "mood": "Energetic",
+    "audio_url": "backend/music/WE WIN (Free Fire 6th Anniversary).mp3"
+  },
+  {
+    "id": 148,
+    "title": "When I'm Sixty Four",
+    "artist": "Cleveland Francis",
+    "mood": "Chill",
+    "audio_url": "backend/music/Willow Tree__[ringtones pro.mp3"
+  },
+  {
+    "id": 149,
+    "title": "See You Again Charlie Puth",
+    "artist": "Wiz Khalifa",
+    "mood": "Chill",
+    "audio_url": "backend/music/Wiz Khalifa - See You Again (Lyrics) ft. Charlie Puth.mp3"
+  },
+  {
+    "id": 150,
+    "title": "Garena Free Fire 6th Anniversary New Update Theme Song Garena Free Fire AssassinFF",
+    "artist": "MoodWave Artist",
+    "mood": "Energetic",
+    "audio_url": "backend/music/X2Download.app - Garena Free Fire_ 6th Anniversary(OB40 PATCH) New Update_Theme Song_Garena Free Fire_ AssassinFF (320 kbps).mp3"
+  },
+  {
+    "id": 151,
+    "title": "DDU-DU DDU-DU English Cover by JANNY",
+    "artist": "BLACKPINK",
+    "mood": "Chill",
+    "audio_url": "backend/music/X2Download.com -  BLACKPINK - DDU-DU DDU-DU _ English Cover by JANNY (128 kbps).mp3"
+  },
+  {
+    "id": 152,
+    "title": "Free Fire -Instrumental",
+    "artist": "REUNION",
+    "mood": "Energetic",
+    "audio_url": "backend/music/X2Download.com - REUNION - Free Fire -Instrumental (320 kbps).mp3"
+  },
+  {
+    "id": 153,
+    "title": "-Dimitri Vegas",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/X2Download.com-Dimitri Vegas .mp3"
+  },
+  {
+    "id": 154,
+    "title": "1 Sad Songs Playlist I'm sorry, don't leave me...",
+    "artist": "MoodWave Artist",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - #1 Sad Songs Playlist (Lyrics Video) I'm sorry, don't leave me...-vOvvAgq-2XU-160k-1644322555461.mp3"
+  },
+  {
+    "id": 155,
+    "title": "Next Level Hobbs & Shaw OST-f156UZYmKPk--1646365603228",
+    "artist": "A$ton Wyld",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - A$ton Wyld - Next Level  Hobbs & Shaw OST-f156UZYmKPk-160k-1646365603228.mp3"
+  },
+  {
+    "id": 156,
+    "title": "Faded",
+    "artist": "Alan Walker",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - Alan Walker - Faded (Lyrics)-qdpXxGPqW-Y-160k-1642431005445.mp3"
+  },
+  {
+    "id": 157,
+    "title": "Sound Effect-2D-ZO2rGcSA--1641704260608",
+    "artist": "And His Name is JOHN CENA",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - And His Name is JOHN CENA - Sound Effect (HD)-2D-ZO2rGcSA-160k-1641704260608.mp3"
+  },
+  {
+    "id": 158,
+    "title": "I Like You so Much, You’ll Know It-iO 1ArVDUtg--1644731219905",
+    "artist": "Aviwkila",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - Aviwkila - I Like You so Much, You’ll Know It (Lyrics)-iO_1ArVDUtg-1080p-1644731219905.mp3"
+  },
+  {
+    "id": 159,
+    "title": "Bruno Mars -Msl2fl3h59I--1643192324070",
+    "artist": "Count On Me",
+    "mood": "Happy",
+    "audio_url": "backend/music/Y2Mate.is - Count On Me - Bruno Mars (Lyrics) -Msl2fl3h59I-160k-1643192324070.mp3"
+  },
+  {
+    "id": 160,
+    "title": "Invincible Part II-SA1ESPFd3LQ--1644232148270",
+    "artist": "Deaf Kev",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Y2Mate.is - Deaf Kev - Invincible Part II (feat. Sendi Hoxha) [NCS10 Release]-SA1ESPFd3LQ-160k-1644232148270.mp3"
+  },
+  {
+    "id": 161,
+    "title": "Loving You Is A Losing Game--fTqG6hEGm4--1647096122166 3",
+    "artist": "Duncan Laurence",
+    "mood": "Sad",
+    "audio_url": "backend/music/Y2Mate.is - Duncan Laurence - Loving You Is A Losing Game (Arcade) (Lyrics)--fTqG6hEGm4-1080p-1647096122166_3.mp3"
+  },
+  {
+    "id": 162,
+    "title": "Torn Apart-0ui9OSXCDrE--1644322783569",
+    "artist": "Eredaze",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - Eredaze - Torn Apart  (Lyrics)-0ui9OSXCDrE-160k-1644322783569.mp3"
+  },
+  {
+    "id": 163,
+    "title": "Him & I-SlnrCLivyjM--1643109157666",
+    "artist": "G-Eazy & Halsey",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - G-Eazy & Halsey - Him & I (Lyrics)-SlnrCLivyjM-1080p-1643109157666.mp3"
+  },
+  {
+    "id": 164,
+    "title": "POPSTARS-9Qt8mFqN8--1655625055550",
+    "artist": "KDA",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - KDA - POPSTARS (BEAUZ & Medii Remix)-5p9Qt8mFqN8-160k-1655625055550.mp3"
+  },
+  {
+    "id": 165,
+    "title": "Industry Baby Jack Harlow-HCq1OcAEAm0--1645974639086",
+    "artist": "Lil Nas X",
+    "mood": "Energetic",
+    "audio_url": "backend/music/Y2Mate.is - Lil Nas X - Industry Baby (Lyrics) ft. Jack Harlow-HCq1OcAEAm0-1080p-1645974639086.mp3"
+  },
+  {
+    "id": 166,
+    "title": "Carol of the Bells-EKkzbbLYPuI--1645986741766 1",
+    "artist": "Lindsey Stirling",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - Lindsey Stirling - Carol of the Bells (Official Video)-EKkzbbLYPuI-1080p-1645986741766_1.mp3"
+  },
+  {
+    "id": 167,
+    "title": "Dancing With Your Ghost-emm0uGDGg2o--1643423049976",
+    "artist": "Sasha Sloan",
+    "mood": "Sad",
+    "audio_url": "backend/music/Y2Mate.is - Sasha Sloan - Dancing With Your Ghost (Lyrics)-emm0uGDGg2o-1080p-1643423049976.mp3"
+  },
+  {
+    "id": 168,
+    "title": "Stay Oh, ooh-woah oh, ooh-woah Oh, I'll be fucked up-gsNyjwyBiws--1645374052737",
+    "artist": "The Kid LAROI, Justin Bieber",
+    "mood": "Sad",
+    "audio_url": "backend/music/Y2Mate.is - The Kid LAROI, Justin Bieber - Stay (Lyrics)  Oh, ooh-woah oh, ooh-woah Oh, I'll be fucked up-gsNyjwyBiws-1080p-1645374052737.mp3"
+  },
+  {
+    "id": 169,
+    "title": "Bad Boys -q8 G23Gik--1641234011909",
+    "artist": "Tungevaag, raaban",
+    "mood": "Chill",
+    "audio_url": "backend/music/Y2Mate.is - Tungevaag, raaban - Bad Boys Lyrics - YouTube (Mixed Song World)-q8_G23G7Pik-160k-1641234011909.mp3"
+  },
+  {
+    "id": 170,
+    "title": "YAD",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/YAD (Яд) ENGLISH VERSION (lyric video).mp3"
+  },
+  {
+    "id": 171,
+    "title": "Avicii The Nights",
+    "artist": "MoodWave Artist",
+    "mood": "Energetic",
+    "audio_url": "backend/music/yt1s.com - Avicii  The Nights.mp3"
+  },
+  {
+    "id": 172,
+    "title": "Desiigner Panda",
+    "artist": "MoodWave Artist",
+    "mood": "Chill",
+    "audio_url": "backend/music/yt1s.com - Desiigner  Panda Official Music Video.mp3"
+  },
+  {
+    "id": 173,
+    "title": "GENTRAMMEL Out of My Mind",
+    "artist": "MoodWave Artist",
+    "mood": "Chill",
+    "audio_url": "backend/music/yt1s.com - GENTRAMMEL  Out of My Mind Lyrics.mp3"
+  },
+  {
+    "id": 174,
+    "title": "Imagine Dragons Believer Romy Wave Cover NSG Remix",
+    "artist": "MoodWave Artist",
+    "mood": "Energetic",
+    "audio_url": "backend/music/yt1s.com - Imagine Dragons  Believer Romy Wave Cover NSG Remix.mp3"
+  },
+  {
+    "id": 175,
+    "title": "Janji Heroes Tonight feat Johnning",
+    "artist": "MoodWave Artist",
+    "mood": "Energetic",
+    "audio_url": "backend/music/yt1s.com - Janji  Heroes Tonight feat Johnning NCS Release.mp3"
+  },
+  {
+    "id": 176,
+    "title": "Justin Bieber Baby ft Ludacris",
+    "artist": "MoodWave Artist",
+    "mood": "Happy",
+    "audio_url": "backend/music/yt1s.com - Justin Bieber  Baby Official Music Video ft Ludacris.mp3"
+  },
+  {
+    "id": 177,
+    "title": "Lost Sky Fearless pt II feat Chris Linton Music Video Edit",
+    "artist": "MoodWave Artist",
+    "mood": "Chill",
+    "audio_url": "backend/music/yt1s.com - Lost Sky  Fearless pt II feat Chris Linton Music Video Edit.mp3"
+  },
+  {
+    "id": 178,
+    "title": "NEFFEX Grateful",
+    "artist": "MoodWave Artist",
+    "mood": "Energetic",
+    "audio_url": "backend/music/yt1s.com - NEFFEX  Grateful Lyrics.mp3"
+  },
+  {
+    "id": 179,
+    "title": "NEFFEX Failure",
+    "artist": "MoodWave Artist",
+    "mood": "Energetic",
+    "audio_url": "backend/music/yt1s.com - NEFFEX Failure  Copyright Free.mp3"
+  },
+  {
+    "id": 180,
+    "title": "Dusk Till Dawn",
+    "artist": "ZAYN & Sia",
+    "mood": "Sad",
+    "audio_url": "backend/music/ZAYN & Sia - Dusk Till Dawn (Lyrics).mp3"
+  },
+  {
+    "id": 181,
+    "title": "Ajay-Atul -T-Series",
+    "artist": "Shah Rukh Khan, Anushka Sharma, Katrina Kaif",
+    "mood": "Chill",
+    "audio_url": "backend/music/ZERO- Mere Naam Tu Full Song - Shah Rukh Khan, Anushka Sharma, Katrina Kaif - Ajay-Atul -T-Series.mp3"
+  },
+  {
+    "id": 182,
+    "title": "Bhool Bhulaiyaa 2 Kartik A, Kiara A, Tabu Tanishk, Pritam, Neeraj, Anees B, Bhushan K",
+    "artist": "Various Artists",
+    "mood": "Chill",
+    "audio_url": "backend/music/[BTCLOD.COM] Bhool Bhulaiyaa 2 (Title Track) Kartik A, Kiara A, Tabu _Tanishk, Pritam, Neeraj, Anees B, Bhushan K-320k.mp3"
+  },
+  {
+    "id": 183,
+    "title": "Often",
+    "artist": "The Weeknd",
+    "mood": "Chill",
+    "audio_url": "backend/music/[BTCLOD.COM] The Weeknd - Often (NSFW) (Official Video)-320k.mp3"
+  }
+];

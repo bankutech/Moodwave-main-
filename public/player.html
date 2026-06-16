@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MoodWave — Player</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<meta name="description" content="Six moods. One player. Pick how you feel and let MoodWave do the rest."/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mw-global.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden}
+body{background:#04020e;color:#fff;font-family:'Syne',sans-serif}
+*{cursor:none!important}
+
+/* Light cursor for dark background */
+#cx-dot  { background: #fff !important; width:6px !important; height:6px !important; }
+#cx-circle { border-color: rgba(255,255,255,0.45) !important; }
+#cx-h, #cx-v { background: rgba(255,255,255,0.08) !important; }
+#cx-circle.on-cta { border-color: rgba(217,70,239,0.95) !important; box-shadow: 0 0 22px rgba(217,70,239,0.5) !important; }
+#cx-circle.on-nav { border-color: rgba(217,70,239,0.85) !important; }
+
+.mw-header{
+  position:fixed;top:0;left:0;width:100%;height:66px;padding:0 32px;
+  z-index:500;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(4,2,14,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.logo{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:800;
+  letter-spacing:4px;text-transform:uppercase;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:10px;transition:opacity .2s;
+}
+.logo:hover{opacity:.65}
+.logo-sq{
+  width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,#ffcc33,#d4a017);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  box-shadow:0 0 16px rgba(255,204,51,0.4);
+  flex-shrink:0;
+}
+.mw-nav{display:flex;gap:0}
+.mw-nav a{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;padding:6px 14px;transition:color .2s;
+}
+.mw-nav a:hover{color:rgba(255,255,255,.75)}
+.mw-nav a.active{color:#d946ef}
+
+#page-overlay{
+  position:fixed;inset:0;background:#04020e;z-index:9000;
+  pointer-events:none;transform:translateY(100%);
+}
+#page-overlay.in{animation:ovIn .38s cubic-bezier(.4,0,.2,1) forwards}
+#page-overlay.out{animation:ovOut .5s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes ovIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes ovOut{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+
+.columns{position:fixed;top:66px;left:0;right:0;bottom:52px;display:flex;overflow:hidden}
+
+.col{
+  position:relative;overflow:hidden;
+  flex:0 0 80px;
+  background-color:rgba(255,255,255,.03);
+  border-right:1px solid rgba(255,255,255,.06);
+  transition:flex .55s cubic-bezier(.77,0,.18,1),background-color .45s ease;
+  will-change:flex,background-color;
+  z-index: 1;
+}
+.col:last-child{border-right:none}
+.col.active{flex:1 1 0; z-index: 2;}
+.col:not(.active):hover{flex-basis:108px;background-color:rgba(255,255,255,.06); z-index: 3;}
+
+.col-hit{position:absolute;inset:0;z-index:10}
+.col.active .col-hit{pointer-events:none}
+
+.col-label-wrap{
+  position:absolute;bottom:40px;left:0;right:0;
+  display:flex;justify-content:center;
+  opacity:1;transition:opacity .2s ease .04s;pointer-events:none;
+}
+.col.active .col-label-wrap{opacity:0;transition-delay:0s}
+.col-label{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:9.5px;letter-spacing:3px;text-transform:uppercase;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  color:rgba(255,255,255,.3);transition:color .25s;
+}
+.col:not(.active):hover .col-label{color:rgba(255,255,255,.65)}
+.col.active[data-dark="0"] .col-label{color:rgba(255,255,255,.45)}
+.col.active[data-dark="0"]:hover .col-label{color:rgba(255,255,255,.7)}
+
+.col-content{
+  position:absolute;inset:0;
+  padding:50px 44px 155px 44px;
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateX(-16px);
+  pointer-events:none;
+  transition:opacity .35s ease,transform .35s ease;
+}
+.col.active .col-content{
+  opacity:1;transform:translateX(0);
+  pointer-events:all;
+  transition-delay:.18s;
+}
+
+.col[data-dark="1"]{
+  --ct:#fff;--cs:rgba(255,255,255,.6);--cm:rgba(255,255,255,.35);
+  --ci:rgba(0,0,0,.25);--cib:rgba(0,0,0,.35);
+  --cbb:rgba(0,0,0,.3);--cbhb:#0a0a0a;--cbhf:#fff;--cd:rgba(0,0,0,.1);
+}
+.col[data-dark="0"]{
+  --ct:#000;--cs:rgba(0,0,0,.6);--cm:rgba(0,0,0,.4);
+  --ci:rgba(255,255,255,.3);--cib:rgba(0,0,0,.15);
+  --cbb:rgba(0,0,0,.1);--cbhb:rgba(0,0,0,.8);--cbhf:#fff;--cd:rgba(0,0,0,.05);
+}
+
+/* ── Number tag ── */
+.c-num{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  color:var(--cm);margin-bottom:22px;flex-shrink:0
+}
+
+.c-icon{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--ci);border:1.5px solid var(--cib);
+  margin-bottom:20px;flex-shrink:0;
+  transform:scale(0);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1) .32s;
+}
+.col.active .c-icon{transform:scale(1)}
+
+/* ── Mood name heading — consistent across all moods ── */
+.c-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(72px,8vw,110px);
+  line-height:.9;color:var(--ct);
+  margin-bottom:18px;flex-shrink:0;overflow:hidden;
+}
+.c-name-inner{
+  display:block;transform:translateY(105%);
+  transition:transform .5s cubic-bezier(.16,1,.3,1) .3s, text-shadow .1s ease;
+}
+.col.active .c-name-inner{transform:translateY(0)}
+
+/* ── Mood description ── */
+.c-desc{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:17px;          /* was 22px — reduced */
+  line-height:1.55;color:var(--cs);
+  max-width:400px;margin-bottom:0;flex-shrink:0;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .35s ease .42s,transform .35s ease .42s;
+  text-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+.col.active .c-desc{opacity:1;transform:translateY(0)}
+
+/* ── Track info ── */
+.c-track{margin-bottom:20px}
+.c-track-title{
+  font-family:'Syne',sans-serif;
+  font-size:20px;           /* was 32px — way too large */
+  font-weight:700;
+  letter-spacing:-0.3px;
+  color:var(--ct);          /* uses mood text color, not hardcoded #fff */
+  margin-bottom:6px;
+  text-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+.c-track-artist{
+  font-family:'DM Mono',monospace;
+  font-size:10px;           /* was 16px — reduced */
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:var(--cs);          /* uses mood secondary color */
+  font-weight:500;
+}
+
+.progress-bar{
+  position:absolute;bottom:0;left:0;height:8px;
+  background:var(--mood-color,#ffcc33);width:0%;transition:width .6s ease,background .35s ease;
+  box-shadow:0 0 15px var(--mood-glow,rgba(255,204,51,0.5));
+}
+.col.active .progress-bar{opacity:.38}
+
+.col.player{
+  --ct:#fff;--cs:rgba(255,255,255,.42);--cm:rgba(255,255,255,.28);
+  --cbb:rgba(255,255,255,.25);--cbhb:rgba(255,255,255,.92);--cbhf:#111;--cd:rgba(255,255,255,.08);
+}
+
+.yt-zone{display:flex;flex-direction:column;gap:0;margin-bottom:20px;flex-shrink:0}
+.yt-label{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px}
+.yt-row{display:flex;gap:0}
+.yt-input{
+  flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  border-right:none;padding:11px 16px;
+  font-family:'DM Mono',monospace;font-size:10px;color:#fff;
+  outline:none;transition:border-color .2s,background .2s;cursor:text!important;
+}
+.yt-input::placeholder{color:rgba(255,255,255,.25)}
+.yt-input:focus{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.1)}
+.yt-play-btn{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);
+  padding:11px 20px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;white-space:nowrap;
+  transition:background .2s,transform .12s;
+}
+.yt-play-btn:hover{background:rgba(255,255,255,.25)}
+.yt-play-btn:active{transform:scale(.97)}
+
+.yt-embed{
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);
+  position:relative;overflow:hidden;transition:border-color .3s;
+}
+.yt-embed.empty::after{
+  content:'Paste a YouTube link above to play';
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.2);text-align:center;padding:20px;
+}
+.yt-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+
+.yt-history{margin-top:10px;flex-shrink:0;max-height:88px;overflow-y:auto}
+.yt-history-item{
+  font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;
+  color:rgba(255,255,255,.35);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s;
+}
+.yt-history-item:hover{color:rgba(255,255,255,.7)}
+
+/* ── Play button — color now driven by JS via CSS var ── */
+.play-wrap{
+  position:fixed;
+  z-index:200;
+  display:flex;align-items:center;gap:22px;
+  top:0;left:0;
+  opacity:1;
+  transition:left .55s cubic-bezier(.77,0,.18,1),top .55s cubic-bezier(.77,0,.18,1),opacity .25s;
+  will-change:left,top;
+}
+body.player-active .play-wrap{opacity:0;pointer-events:none}
+
+.play-ring{
+  width:112px;height:112px;border-radius:50%;   /* slightly smaller — was 126px */
+  background:var(--mood-color,#ffcc33);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 25px var(--mood-glow,rgba(255,204,51,0.3));
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .35s ease,box-shadow .35s ease;
+  position:relative;overflow:hidden;
+}
+.play-ring:hover{
+  transform:scale(1.08);
+  filter:brightness(1.1);
+  box-shadow:0 0 45px var(--mood-glow,rgba(255,204,51,0.6));
+}
+.play-ring:active{transform:scale(.96)!important}
+
+.play-tri{
+  width:0;height:0;
+  border:14px solid transparent;
+  border-left:24px solid #fff;
+  margin-left:6px;position:absolute;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.play-tri.hide{opacity:0;transform:scale(.4) rotate(-30deg)}
+
+.pause-bars{
+  display:flex;gap:7px;position:absolute;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.pause-bars.hide{opacity:0;transform:scale(.4)}
+.pause-bars span{
+  display:block;width:5px;height:20px;
+  background:#fff;border-radius:2px;
+}
+
+@keyframes ripple-anim{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:.35}
+  100%{transform:translate(-50%,-50%) scale(4);opacity:0}
+}
+.ripple{
+  position:absolute;width:60px;height:60px;border-radius:50%;
+  background:rgba(255,255,255,.22);pointer-events:none;
+  animation:ripple-anim .55s ease-out forwards;
+}
+
+.skip{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--skip-border,rgba(255,255,255,.2));background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--skip-color,rgba(255,255,255,.5));
+  transition:border-color .2s,color .2s,transform .15s,background .2s;
+}
+.skip:hover{border-color:var(--skip-hover-border,rgba(255,255,255,.5));color:var(--skip-hover-color,#fff);background:var(--skip-hover-bg,rgba(255,255,255,.08));transform:scale(1.1)}
+.skip:active{transform:scale(.9)}
+
+.footer{
+  position:fixed;bottom:0;left:0;right:0;height:52px;
+  background:rgba(4,2,14,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;z-index:400;
+}
+.f-brand{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.f-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);transition:background .3s,transform .3s;flex-shrink:0}
+.f-dot.on{background:#22c55e;animation:fp 1.5s ease infinite}
+@keyframes fp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.72)}}
+
+.f-tabs{display:flex;gap:16px}
+.f-tab{
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.3);background:none;border:none;padding:4px 0;
+  position:relative;transition:color .2s,transform .15s;cursor:pointer;
+}
+.f-tab::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:1px;
+  background:#d946ef;transform:scaleX(0);transform-origin:left;
+  transition:transform .22s ease;
+}
+.f-tab:hover{color:rgba(255,255,255,.65)}
+.f-tab.on{color:rgba(255,255,255,.85)}
+.f-tab.on::after{transform:scaleX(1)}
+.f-tab:active{transform:scale(.95)}
+
+@keyframes colEntryActive{from{opacity:0}to{opacity:1}}
+@keyframes colEntryInactive{from{opacity:0}to{opacity:1}}
+.boot-active{animation:colEntryActive .5s ease both}
+.boot-inactive{animation:colEntryInactive .6s ease both}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-5px)}
+  40%{transform:translateX(5px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+
+@media(max-width:860px){
+  .col:not(.active){flex-basis:48px}
+  .col-label{font-size:7.5px;letter-spacing:2px}
+  .mw-header{padding:0 18px}.mw-nav{gap:14px}
+  .play-wrap .skip{display:none}
+  .col-content{padding:36px 20px 150px 20px}
+}
+
+#liquid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #04020e;
+  filter: blur(50px) contrast(20);
+  opacity: 0.8;
+}
+
+/* ── Mood Assistant Toast ── */
+.mood-toast {
+  position: fixed;
+  bottom: 80px;
+  right: 32px;
+  width: 320px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  z-index: 1000;
+  transform: translateX(130%);
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+}
+.mood-toast.show { transform: translateX(0); }
+.mt-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.mt-icon {
+  width: 24px;
+  height: 24px;
+  background: #d946ef;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.mt-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+}
+.mt-msg {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+.mt-btns {
+  display: flex;
+  gap: 12px;
+}
+.mt-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mt-btn-yes { background: #fff; color: #000; font-weight: 700; }
+.mt-btn-no { background: rgba(255,255,255,0.1); color: #fff; }
+.mt-btn-yes:hover { background: #d946ef; color: #fff; box-shadow: 0 0 15px rgba(217,70,239,0.4); }
+.mt-btn-no:hover { background: rgba(255,255,255,0.2); }
+
+/* ── Sonic Time Travel UI ── */
+.era-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  padding: 4px;
+  border-radius: 99px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.era-btn, .mode-8d-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 99px;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.era-btn:hover, .mode-8d-btn:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.era-btn.active, .mode-8d-btn.active {
+  color: #000;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+/* Era Visual Overlays */
+body.era-1920 { filter: sepia(0.6) contrast(1.1) brightness(0.9); }
+body.era-1980 { filter: hue-rotate(-10deg) saturate(1.2) contrast(1.1); }
+body.era-2077 { filter: hue-rotate(180deg) brightness(1.1) contrast(1.2); }
+body.era-1920::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 10000;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png');
+  opacity: 0.15; mix-blend-mode: overlay;
+}
+</style>
+</head>
+<body>
+
+<canvas id="liquid-bg"></canvas>
+<div id="page-overlay"></div>
+
+<!-- Mood Assistant Toast -->
+<div class="mood-toast" id="moodAssistant">
+  <div class="mt-head">
+    <div class="mt-icon">✨</div>
+    <span class="mt-title">Vibe Check</span>
+  </div>
+  <div class="mt-msg" id="assistantMsg"></div>
+  <div class="mt-btns">
+    <button class="mt-btn mt-btn-yes" id="assistantYes">Switch Vibe</button>
+    <button class="mt-btn mt-btn-no" id="assistantNo">Stay</button>
+  </div>
+</div>
+
+<header class="mw-header">
+  <a href="index.html" class="logo"><div class="logo-sq">🎵</div>MoodWave</a>
+  <nav class="mw-nav">
+    <a href="index.html">Home</a>
+    <a href="mood.html">Vibe Check</a>
+    <a href="player.html" class="active">Player</a>
+    <a href="discover.html">Discover</a>
+    <a href="live.html">Live Stage</a>
+    <a href="about.html">About</a>
+    <a href="visualizer.html">Visualizer</a>
+  </nav>
+</header>
+
+<div class="columns" id="cols"></div>
+
+<div class="play-wrap" id="playWrap">
+  <button class="skip" id="skipPrev" title="Previous">&#8249;</button>
+  <div class="play-ring" id="playRing">
+    <div class="play-tri" id="playTri"></div>
+    <div class="pause-bars hide" id="pauseBars"><span></span><span></span></div>
+  </div>
+  <button class="skip" id="skipNext" title="Next">&#8250;</button>
+</div>
+
+<div class="footer">
+  <div class="era-wrap" id="eraSelector">
+    <button class="era-btn active" data-era="modern">Modern</button>
+    <button class="era-btn" data-era="1980">1980s</button>
+    <button class="era-btn" data-era="1920">1920s</button>
+    <button class="era-btn" data-era="2077">2077</button>
+  </div>
+  <button class="mode-8d-btn" id="btn-8d" style="margin-left:12px; border:1px solid rgba(255,255,255,0.2); position:relative; z-index:10;">8D MODE</button>
+  <div class="f-dot" id="fDot"></div>
+  <div class="f-tabs" id="fTabs"></div>
+</div>
+
+<audio id="audio"></audio>
+<script src="songs.js"></script>
+<script>
+const MOODS=[
+  {id:'happy',    label:'Happy',    num:'01',bg:'#FFCC33',dark:0,desc:'Feel-good anthems to lift your spirit sky high.',   api:'Happy',    ringColor:'#FEF08A',ringGlow:'rgba(254,240,138,0.45)'},
+  {id:'chill',    label:'Chill',    num:'02',bg:'#00D2FF',dark:0,desc:'Slow down, breathe, and drift into the zone.',      api:'Chill',    ringColor:'#80E5FF',ringGlow:'rgba(128,229,255,0.4)'},
+  {id:'sad',      label:'Sad',      num:'03',bg:'#A855F7',dark:1,desc:'Tender melodies for tender moments.',               api:'Sad',    ringColor:'#D8B4FE',ringGlow:'rgba(216,180,254,0.4)'},
+  {id:'energetic',label:'Energetic',num:'04',bg:'#EF4444',dark:1,desc:'Fuel your fire and push your limits.',             api:'Energetic',ringColor:'#991B1B',ringGlow:'rgba(153,27,27,0.45)'},
+  {id:'night',    label:'Night',    num:'05',bg:'#0F172A',dark:1,desc:'Late-night moods and ambient dreamscapes.',        api:'Night',    ringColor:'#334155',ringGlow:'rgba(51,65,85,0.4)'},
+  {id:'focus',    label:'Focus',    num:'06',bg:'#3B82F6',dark:1,desc:'Deep concentration and flow state music.',         api:'Focus',    ringColor:'#93C5FD',ringGlow:'rgba(147,197,253,0.4)'},
+];
+const PLAYER_IDX=MOODS.length;
+
+const colsWrap=document.getElementById('cols');
+const fTabs=document.getElementById('fTabs');
+const audio=document.getElementById('audio');
+const playWrap=document.getElementById('playWrap');
+const playRing=document.getElementById('playRing');
+const playTri=document.getElementById('playTri');
+const pauseBars=document.getElementById('pauseBars');
+const fDot=document.getElementById('fDot');
+
+/* Update play ring + progress bar + skip buttons to match active mood */
+function updateRingColor(idx){
+  if(idx<0||idx>=MOODS.length){
+    playRing.style.removeProperty('--mood-color');
+    playRing.style.removeProperty('--mood-glow');
+    return;
+  }
+  const m=MOODS[idx];
+  // Play ring
+  playRing.style.setProperty('--mood-color',m.ringColor);
+  playRing.style.setProperty('--mood-glow',m.ringGlow);
+  // Progress bar on this column
+  const pb=document.getElementById('pb-'+idx);
+  if(pb){
+    pb.style.setProperty('--mood-color',m.ringColor);
+    pb.style.setProperty('--mood-glow',m.ringGlow);
+  }
+  // Skip buttons: light style for dark backgrounds, dark style for light backgrounds
+  const sc='rgba(255,255,255,.5)';
+  const sb='rgba(255,255,255,.2)';
+  const shc='#fff';
+  const shb='rgba(255,255,255,.5)';
+  const shbg='rgba(255,255,255,.08)';
+  playWrap.style.setProperty('--skip-color',sc);
+  playWrap.style.setProperty('--skip-border',sb);
+  playWrap.style.setProperty('--skip-hover-color',shc);
+  playWrap.style.setProperty('--skip-hover-border',shb);
+  playWrap.style.setProperty('--skip-hover-bg',shbg);
+}
+
+MOODS.forEach((m,i)=>{
+  const col=document.createElement('div');
+  col.className='col';
+  col.dataset.idx=i;
+  col.dataset.dark=m.dark;
+  col.dataset.bg=m.bg;
+  col.innerHTML=`
+    <div class="col-hit" data-idx="${i}"></div>
+    <div class="col-label-wrap"><span class="col-label">${m.label}</span></div>
+    <div class="col-content">
+      <span class="c-num">${m.num}</span>
+      <div class="c-icon"></div>
+      <h1 class="c-name"><span class="c-name-inner">${m.label.toUpperCase()}</span></h1>
+      <p class="c-desc">${m.desc}</p>
+      <div class="c-track">
+        <div class="c-track-title" id="tt-${i}">—</div>
+        <div class="c-track-artist" id="ta-${i}"></div>
+      </div>
+    </div>
+    <div class="progress-bar" id="pb-${i}"></div>`;
+  colsWrap.appendChild(col);
+
+  const tab=document.createElement('button');
+  tab.className='f-tab';
+  tab.textContent=m.label;
+  tab.dataset.idx=i;
+  fTabs.appendChild(tab);
+});
+
+const playerCol=document.createElement('div');
+playerCol.className='col player';
+playerCol.dataset.idx=PLAYER_IDX;
+playerCol.dataset.dark=0;
+playerCol.dataset.bg='#111117';
+playerCol.innerHTML=`
+  <div class="col-hit" data-idx="${PLAYER_IDX}"></div>
+  <div class="col-label-wrap"><span class="col-label">Player</span></div>
+  <div class="col-content" style="padding-bottom:30px">
+    <span class="c-num">PL</span>
+    <div class="c-icon" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)"></div>
+    <h1 class="c-name" style="font-size:clamp(44px,5vw,72px)"><span class="c-name-inner">PLAYER</span></h1>
+    <div class="yt-zone">
+      <span class="yt-label">Paste YouTube link</span>
+      <div class="yt-row">
+        <input class="yt-input" id="ytInput" type="url" placeholder="youtube.com/watch?v=…" autocomplete="off" spellcheck="false"/>
+        <button class="yt-play-btn" id="ytBtn">PLAY</button>
+      </div>
+    </div>
+    <div class="yt-embed empty" id="ytEmbed"></div>
+    <div class="yt-history" id="ytHistory"></div>
+  </div>`;
+colsWrap.appendChild(playerCol);
+
+const playTab=document.createElement('button');
+playTab.className='f-tab';
+playTab.textContent='Player';
+playTab.dataset.idx=PLAYER_IDX;
+fTabs.appendChild(playTab);
+
+let activeIdx=-1,songs=[],songIdx=0,playing=false,audioCtx=null;
+const cache={},ytHistory=[];
+let progressTimer=null;
+
+// Mood Assistant Tracking
+let songsInCurrentMood = 0;
+let lastMoodIdx = -1;
+let assistantTriggeredThisSession = false;
+
+function suggestMoodShift(currentIdx) {
+  const toast = document.getElementById('moodAssistant');
+  const msg = document.getElementById('assistantMsg');
+  const currentMood = MOODS[currentIdx].label;
+  
+  // Suggestion mapping
+  const suggestions = {
+    'Sad': { to: 'Chill', text: "You've been in your feels for a while. A switch to Chill might lift the weight?" },
+    'Energetic': { to: 'Focus', text: "High energy is great, but maybe it's time to channel it into some deep Focus?" },
+    'Focus': { to: 'Happy', text: "Great work! You've been focused for 3 tracks. Reward yourself with something Happy?" },
+    'Night': { to: 'Chill', text: "The night is deep. Want to drift into a softer Chill vibe?" },
+    'Happy': { to: 'Energetic', text: "Feeling good? Let's take it up a notch with some Energetic beats!" },
+    'Chill': { to: 'Night', text: "Chilling out? Maybe some late-night ambient dreamscapes would fit the mood?" }
+  };
+
+  const suggestion = suggestions[currentMood];
+  if (!suggestion) return;
+
+  msg.textContent = suggestion.text;
+  const targetMoodIdx = MOODS.findIndex(m => m.label === suggestion.to);
+  
+  toast.classList.add('show');
+
+  document.getElementById('assistantYes').onclick = () => {
+    toast.classList.remove('show');
+    switchTo(targetMoodIdx);
+  };
+  document.getElementById('assistantNo').onclick = () => {
+    toast.classList.remove('show');
+  };
+}
+
+function allCols(){return colsWrap.querySelectorAll('.col')}
+
+function positionPlayWrap(idx){
+  if(idx<0||idx>=MOODS.length)return;
+  const col=allCols()[idx];
+  if(!col)return;
+  const cr=col.getBoundingClientRect();
+  const ww=playWrap.offsetWidth;
+  const areaTop=60;
+  const areaH=window.innerHeight-52-60;
+  playWrap.style.left=(cr.left+cr.width/2-ww/2)+'px';
+  playWrap.style.top=(areaTop+areaH*0.62-playWrap.offsetHeight/2)+'px';
+}
+
+function spawnRipple(el,e){
+  const r=el.getBoundingClientRect();
+  const rp=document.createElement('div');
+  rp.className='ripple';
+  rp.style.left=(e.clientX-r.left)+'px';
+  rp.style.top=(e.clientY-r.top)+'px';
+  el.appendChild(rp);
+  setTimeout(()=>rp.remove(),560);
+}
+
+function switchTo(idx,skipHistory=false){
+  if(idx===activeIdx)return;
+  const cols=allCols();
+
+  if(activeIdx>=0&&cols[activeIdx]){
+    const old=cols[activeIdx];
+    old.classList.remove('active');
+    setTimeout(()=>{
+      if(!old.classList.contains('active'))old.style.backgroundColor='rgba(255,255,255,.03)';
+    },300);
+  }
+
+  // Save previous index so pauseAudio clears the right progress bar
+  const prevIdx=activeIdx;
+  activeIdx=idx;
+  const col=cols[idx];
+  if(!col)return;
+
+  col.style.backgroundColor=col.dataset.bg;
+  col.classList.add('active');
+
+  // Update play ring color to match this mood
+  updateRingColor(idx);
+
+  fTabs.querySelectorAll('.f-tab').forEach((t,i)=>t.classList.toggle('on',i===idx));
+
+  if(idx<MOODS.length){
+    const m=MOODS[idx];
+    document.title=m.label+' — MoodWave';
+    if(!skipHistory)history.replaceState(null,'','#'+m.id);
+    document.body.classList.remove('player-active');
+    // Pause and clear progress bar of the OLD column
+    if(prevIdx>=0&&prevIdx<MOODS.length){
+      audio.pause();playing=false;syncPlayUI();
+      clearInterval(progressTimer);
+      const oldPb=document.getElementById('pb-'+prevIdx);
+      if(oldPb)oldPb.style.width='0%';
+    }
+    loadSongs(idx);
+    positionPlayWrap(idx);
+    setTimeout(()=>positionPlayWrap(idx),300);
+    setTimeout(()=>positionPlayWrap(idx),600);
+  } else {
+    document.title='Player — MoodWave';
+    if(!skipHistory)history.replaceState(null,'','#player');
+    document.body.classList.add('player-active');
+    audio.pause();playing=false;syncPlayUI();
+    clearInterval(progressTimer);
+    if(prevIdx>=0&&prevIdx<MOODS.length){
+      const oldPb=document.getElementById('pb-'+prevIdx);
+      if(oldPb)oldPb.style.width='0%';
+    }
+  }
+}
+
+let loadToken=0; // increments each switch; stale fetches check against it
+
+async function loadSongs(idx){
+  const m=MOODS[idx];
+  const token=++loadToken;
+  const ttEl=document.getElementById('tt-'+idx);
+  const taEl=document.getElementById('ta-'+idx);
+  // REMOVED cache check to ensure Workbench updates reflect immediately
+  if(ttEl)ttEl.textContent='Loading…';
+  if(taEl)taEl.textContent='';
+  let fetched=[];
+  try{
+    const r=await fetch('/songs?mood='+m.api+'&t='+Date.now());
+    if(!r.ok)throw 0;
+    fetched=await r.json();
+    // Case-insensitive filtering
+    fetched=fetched.filter(s=>(s.mood||'').toLowerCase()===m.api.toLowerCase());
+  } catch {
+    fetched=(window.allLocalSongs||[]).filter(s=>(s.mood||'').toLowerCase()===m.api.toLowerCase());
+    if(!fetched.length){
+      try{
+        const r=await fetch('songs.json?t='+Date.now());
+        const d=await r.json();
+        fetched=d.filter(s=>(s.mood||'').toLowerCase()===m.api.toLowerCase());
+      }catch{}
+    }
+  }
+  // Discard result if user has already switched to a different mood
+  if(token!==loadToken)return;
+  // cache[m.api]=fetched; // Cache disabled for dev sync
+
+  songs=fetched;
+  if(songs.length)showSong(0,false,idx);
+  else{if(ttEl)ttEl.textContent='No songs found';if(taEl)taEl.textContent=''}
+}
+
+function showSong(i,play=true,moodIdx){
+  const idx=moodIdx!==undefined?moodIdx:activeIdx;
+  if(!songs.length)return;
+  songIdx=((i%songs.length)+songs.length)%songs.length;
+  const s=songs[songIdx];
+  audio.src=s.audio_url||s.url||'';
+  const ttEl=document.getElementById('tt-'+idx);
+  const taEl=document.getElementById('ta-'+idx);
+  if(ttEl)ttEl.textContent=s.title||'Unknown';
+  if(taEl)taEl.textContent=s.artist||'';
+
+  // AI Assistant Logic
+  if (idx === lastMoodIdx) {
+    songsInCurrentMood++;
+    if (songsInCurrentMood === 3 && !assistantTriggeredThisSession) {
+      setTimeout(() => suggestMoodShift(idx), 2000);
+      assistantTriggeredThisSession = true;
+    }
+  } else {
+    songsInCurrentMood = 1;
+    lastMoodIdx = idx;
+    assistantTriggeredThisSession = false;
+  }
+
+  if(play)playAudio();
+}
+
+function updateProgress(){
+  if(!audio.duration)return;
+  const pct=(audio.currentTime/audio.duration)*100;
+  const pb=document.getElementById('pb-'+activeIdx);
+  if(pb)pb.style.width=pct+'%';
+
+  // Update Favicon Pulse (throttled to 500ms for performance)
+  if (analyser) {
+    updateFaviconPulse(window.mw_current_volume || 0, MOODS[activeIdx]?.bg || '#d946ef');
+  }
+}
+
+// ── Dynamic Favicon Logic ──
+const faviconCanvas = document.createElement('canvas');
+faviconCanvas.width = faviconCanvas.height = 32;
+const fCtx = faviconCanvas.getContext('2d');
+const faviconLink = document.querySelector("link[rel*='icon']");
+
+function updateFaviconPulse(power, color) {
+  fCtx.clearRect(0, 0, 32, 32);
+  
+  // Background circle
+  fCtx.beginPath();
+  fCtx.arc(16, 16, 14, 0, Math.PI * 2);
+  fCtx.fillStyle = '#04020e';
+  fCtx.fill();
+
+  // Pulsing mood circle
+  const radius = 8 + (power * 8);
+  fCtx.beginPath();
+  fCtx.arc(16, 16, radius, 0, Math.PI * 2);
+  fCtx.fillStyle = color;
+  fCtx.shadowBlur = 10;
+  fCtx.shadowColor = color;
+  fCtx.fill();
+  
+  // Musical note icon
+  fCtx.font = '16px serif';
+  fCtx.textAlign = 'center';
+  fCtx.textBaseline = 'middle';
+  fCtx.fillStyle = power > 0.5 ? '#fff' : 'rgba(255,255,255,0.8)';
+  fCtx.fillText('🎵', 16, 16);
+
+  faviconLink.href = faviconCanvas.toDataURL('image/png');
+}
+
+let sourceNode, filterNode, distortionNode, gainNode, analyser, stereoPannerNode, eraNodes = {};
+
+function makeDistortionCurve(amount) {
+  const k = typeof amount === 'number' ? amount : 50;
+  const n_samples = 44100;
+  const curve = new Float32Array(n_samples);
+  const deg = Math.PI / 180;
+  for (let i = 0; i < n_samples; ++i) {
+    const x = (i * 2) / n_samples - 1;
+    curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+  }
+  return curve;
+}
+
+function ensureCtx(){
+  if(audioCtx) return;
+  audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+  sourceNode = audioCtx.createMediaElementSource(audio);
+  
+  // Create Filter Chain
+  filterNode = audioCtx.createBiquadFilter();
+  distortionNode = audioCtx.createWaveShaper();
+  stereoPannerNode = audioCtx.createStereoPanner();
+  gainNode = audioCtx.createGain();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  
+  sourceNode.connect(filterNode);
+  filterNode.connect(distortionNode);
+  distortionNode.connect(stereoPannerNode);
+  stereoPannerNode.connect(gainNode);
+  gainNode.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  
+  // Set initial state
+  setEra('modern');
+}
+
+function setEra(era) {
+  if (!audioCtx) return;
+  
+  // Reset nodes to clean state
+  filterNode.type = 'allpass';
+  filterNode.frequency.value = 1000;
+  filterNode.Q.value = 1;
+  filterNode.gain.value = 0;
+  distortionNode.curve = null;
+  gainNode.gain.value = 1;
+  document.body.className = document.body.className.replace(/\bera-\S+/g, '');
+  
+  if (era === '1920') {
+    // Gramophone: Mid-range + Distortion
+    filterNode.type = 'bandpass';
+    filterNode.frequency.value = 1200;
+    filterNode.Q.value = 6.0;
+    distortionNode.curve = makeDistortionCurve(40);
+    gainNode.gain.value = 1.2;
+    document.body.classList.add('era-1920');
+  } else if (era === '1980') {
+    // VHS: Bass boost + Slight Saturation
+    filterNode.type = 'lowshelf';
+    filterNode.frequency.value = 300;
+    filterNode.gain.value = 12;
+    distortionNode.curve = makeDistortionCurve(10);
+    document.body.classList.add('era-1980');
+  } else if (era === '2077') {
+    // Cyber: High-pass + Extreme Shimmer
+    filterNode.type = 'highpass';
+    filterNode.frequency.value = 1200;
+    distortionNode.curve = makeDistortionCurve(100);
+    gainNode.gain.value = 0.8;
+    document.body.classList.add('era-2077');
+  }
+  
+  // Update UI (only era-btn inside eraSelector, not 8D btn)
+  document.querySelectorAll('#eraSelector .era-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.era === era);
+  });
+}
+
+function playAudio(){
+  ensureCtx();
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  audio.play().then(()=>{playing=true;syncPlayUI()}).catch(console.error);
+}
+
+function pauseAudio(){
+  audio.pause();playing=false;syncPlayUI();
+  clearInterval(progressTimer);
+  const pb=document.getElementById('pb-'+activeIdx);
+  if(pb)pb.style.width='0%';
+}
+
+function togglePlay(){
+  if(activeIdx>=MOODS.length)return;
+  if(!songs.length)return;
+  if(!audio.src||audio.src===location.href){showSong(0,true);return}
+  playing?pauseAudio():playAudio();
+}
+
+function syncPlayUI(){
+  if(playing){
+    playTri.classList.add('hide');
+    pauseBars.classList.remove('hide');
+    fDot.classList.add('on');
+    clearInterval(progressTimer);
+    progressTimer=setInterval(updateProgress,500);
+  } else {
+    playTri.classList.remove('hide');
+    pauseBars.classList.add('hide');
+    fDot.classList.remove('on');
+    clearInterval(progressTimer);
+  }
+}
+
+audio.addEventListener('ended',()=>showSong(songIdx+1,true));
+
+window.addEventListener('resize',()=>{
+  if(activeIdx>=0&&activeIdx<MOODS.length)positionPlayWrap(activeIdx);
+});
+
+function extractYTId(url){
+  const ps=[/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,/^[A-Za-z0-9_-]{11}$/];
+  for(const p of ps){const m=url.match(p);if(m)return m[1]}
+  return null;
+}
+
+function loadYT(raw){
+  const id=extractYTId(raw.trim());
+  const embed=document.getElementById('ytEmbed');
+  const input=document.getElementById('ytInput');
+  if(!id){
+    input.style.borderColor='rgba(255,80,80,.6)';
+    input.style.animation='shake .3s ease';
+    setTimeout(()=>{input.style.borderColor='';input.style.animation=''},900);
+    return;
+  }
+  // NEW: Instead of an iframe, use the audio element with our backend proxy
+  // This allows Time Travel filters to work on YouTube songs!
+  embed.classList.remove('empty');
+  embed.innerHTML = `<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.4);font-family:'DM Mono';font-size:10px;letter-spacing:2px;">STREAMING FROM YOUTUBE PROXY...</div>`;
+  
+  const proxyUrl = `/api/audio/stream?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`;
+  audio.src = proxyUrl;
+  playAudio();
+
+  if(!ytHistory.includes(raw)){ytHistory.unshift(raw);if(ytHistory.length>5)ytHistory.pop();renderHistory()}
+  input.value='';
+}
+
+function renderHistory(){
+  const hist=document.getElementById('ytHistory');
+  if(!hist)return;
+  hist.innerHTML=ytHistory.map((url,i)=>`<div class="yt-history-item" data-yturl="${url}" title="${url}">${i+1}. ${url}</div>`).join('');
+}
+
+// Single unified click handler — no duplicate listeners
+document.addEventListener('click',e=>{
+  if(e.target.id==='ytBtn'){loadYT(document.getElementById('ytInput').value);return}
+  const hi=e.target.closest('.yt-history-item');
+  if(hi){loadYT(hi.dataset.yturl);return}
+  if(e.target.closest('#playRing')){spawnRipple(playRing,e);togglePlay();return}
+  const ft=e.target.closest('.f-tab');
+  if(ft){switchTo(+ft.dataset.idx);return}
+  const eb=e.target.closest('.era-btn');
+  if(eb){
+    ensureCtx();
+    setEra(eb.dataset.era);
+    return;
+  }
+  if(e.target.closest('#skipPrev')){showSong(songIdx-1,playing);return}
+  if(e.target.closest('#skipNext')){showSong(songIdx+1,playing);return}
+});
+
+document.getElementById('ytInput')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter')loadYT(e.target.value);
+});
+
+document.addEventListener('paste',e=>{
+  if(activeIdx!==PLAYER_IDX)return;
+  const text=(e.clipboardData||window.clipboardData).getData('text');
+  if(text&&extractYTId(text.trim())){
+    e.preventDefault();
+    const input=document.getElementById('ytInput');
+    if(input)input.value=text.trim();
+    loadYT(text.trim());
+  }
+});
+
+colsWrap.addEventListener('click',e=>{
+  const hit=e.target.closest('.col-hit');
+  if(hit)switchTo(+hit.dataset.idx);
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.code==='Space'){e.preventDefault();togglePlay()}
+  if(e.code==='ArrowRight')showSong(songIdx+1,playing);
+  if(e.code==='ArrowLeft')showSong(songIdx-1,playing);
+  const n=parseInt(e.key);
+  // Keys 1–6 = moods only; Player excluded from keyboard shortcut
+  if(n>=1&&n<=6)switchTo(n-1);
+});
+
+(function(){
+  const ov=document.getElementById('page-overlay');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ov.classList.add('out')));
+  document.querySelectorAll('header a[href], .footer a[href]').forEach(a=>{
+    const href=a.getAttribute('href');
+    if(!href||href.startsWith('#')||href.startsWith('http'))return;
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      ov.className='';
+      ov.style.transform='translateY(100%)';
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        ov.classList.add('in');
+        setTimeout(()=>{location.href=href},370);
+      }));
+    });
+  });
+})();
+
+
+(function init(){
+  const hash=location.hash.slice(1).toLowerCase();
+  const fromHash=hash==='player'?PLAYER_IDX:MOODS.findIndex(m=>m.id===hash);
+  const startIdx=fromHash>=0?fromHash:0;
+
+  // Disable transitions on first paint so active column starts fully expanded
+  const cols=allCols();
+  cols.forEach(c=>c.style.transition='none');
+
+  cols.forEach((col,i)=>{
+    col.style.animationDelay=i===startIdx?'0ms':`${55+i*32}ms`;
+    col.classList.add(i===startIdx?'boot-active':'boot-inactive');
+  });
+
+  switchTo(startIdx,true);
+
+  // Re-enable transitions after first frame
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    allCols().forEach(c=>c.style.transition='');
+    if(startIdx<MOODS.length)positionPlayWrap(startIdx);
+    setTimeout(()=>allCols().forEach(c=>c.classList.remove('boot-active','boot-inactive')),900);
+  }));
+})();
+
+// ── Liquid Background Logic (Enhanced Metaballs) ──
+(function(){
+  const lCanvas = document.getElementById('liquid-bg');
+  const lCtx = lCanvas.getContext('2d');
+  function lResize(){lCanvas.width=window.innerWidth;lCanvas.height=window.innerHeight}
+  lResize(); window.addEventListener('resize',lResize);
+
+  const blobs = [];
+  const colors = ['#d946ef','#8b00ff','#00c8ff','#ffcc33','#EF4444','#22c55e'];
+  
+  for(let i=0; i<8; i++) {
+    blobs.push({
+      x: Math.random()*lCanvas.width,
+      y: Math.random()*lCanvas.height,
+      r: Math.random()*150 + 100,
+      vx: (Math.random()-0.5)*1.5,
+      vy: (Math.random()-0.5)*1.5,
+      color: colors[i % colors.length]
+    });
+  }
+  
+  // 8D Audio Logic
+  let mode8d = false;
+  let panAngle = 0;
+  const btn8d = document.getElementById('btn-8d');
+  btn8d.addEventListener('click', () => {
+    ensureCtx();
+    mode8d = !mode8d;
+    btn8d.classList.toggle('active', mode8d);
+    if(mode8d){
+      btn8d.style.boxShadow = '0 0 15px rgba(217,70,239,0.5)';
+      btn8d.style.color = '#d946ef';
+      btn8d.style.borderColor = '#d946ef';
+    } else {
+      btn8d.style.boxShadow = '';
+      btn8d.style.color = '';
+      btn8d.style.borderColor = 'rgba(255,255,255,0.2)';
+      if (stereoPannerNode) stereoPannerNode.pan.value = 0;
+    }
+  });
+
+  function lAnimate(){
+    // 8D Panning Animation
+    if (mode8d && stereoPannerNode) {
+      panAngle += 0.02; // Controls rotation speed
+      stereoPannerNode.pan.value = Math.sin(panAngle);
+    }
+
+    // Rapidly update Audio Globals for Cursor Visualizer (60 FPS)
+    if (typeof analyser !== 'undefined' && analyser) {
+      const data = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(data);
+      const avg = data.reduce((a, b) => a + b) / data.length;
+      window.mw_current_volume = avg / 128; 
+      window.mw_frequency_data = Array.from(data); 
+      window.mw_active_mood_id = MOODS[activeIdx]?.id || 'happy';
+    }
+
+    lCtx.fillStyle = '#04020e';
+    lCtx.fillRect(0,0,lCanvas.width,lCanvas.height);
+    
+    const power = (window.mw_current_volume || 0);
+    const activeMood = MOODS[activeIdx];
+    const moodColor = activeMood ? activeMood.bg : '#d946ef';
+
+    // ── 1. Ambient "Screen Bleed" Lighting (Ambilight) ──
+    const glowIntensity = Math.min(150, power * 200); 
+    document.body.style.boxShadow = `inset 0 0 ${glowIntensity}px ${moodColor}`;
+
+    // ── 2. Audio-Reactive Typography (Breathing Text) ──
+    const activeTitle = document.querySelector('.col.active .c-name-inner');
+    if (activeTitle && power > 0.01) {
+      const textGlow = power * 30;
+      activeTitle.style.textShadow = `0 0 ${textGlow}px ${moodColor}, 0 0 ${textGlow * 2}px ${moodColor}40`;
+      activeTitle.style.letterSpacing = `${power * 4}px`;
+    } else if (activeTitle) {
+      activeTitle.style.textShadow = '';
+      activeTitle.style.letterSpacing = '';
+    }
+
+    blobs.forEach((b, i) => {
+      // Blobs drift
+      b.x += b.vx * (1 + power * 2);
+      b.y += b.vy * (1 + power * 2);
+      
+      // Bounce
+      if(b.x < -b.r) b.x = lCanvas.width + b.r;
+      if(b.x > lCanvas.width + b.r) b.x = -b.r;
+      if(b.y < -b.r) b.y = lCanvas.height + b.r;
+      if(b.y > lCanvas.height + b.r) b.y = -b.r;
+      
+      // Draw gooey blob
+      lCtx.beginPath();
+      const grad = lCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * (1 + power));
+      
+      // Mix current mood color into the blobs
+      if (i < 3) {
+        grad.addColorStop(0, moodColor);
+      } else {
+        grad.addColorStop(0, b.color);
+      }
+      
+      grad.addColorStop(1, 'transparent');
+      lCtx.fillStyle = grad;
+      lCtx.arc(b.x, b.y, b.r * (1 + power), 0, Math.PI*2);
+      lCtx.fill();
+    });
+    requestAnimationFrame(lAnimate);
+  }
+  lAnimate();
+})();
+</script>
+<script src="mw-cursor.js"></script>
+</body>
+</html>

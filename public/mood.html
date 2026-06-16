@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moods — MoodWave</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+  <meta name="description" content="Choose your mood and discover the perfect soundtrack. From chill vibes to high-octane bangers, MoodWave has you covered."/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="mw-global.css">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;overflow:hidden;background:#04020e;color:#fff;font-family:'Syne',sans-serif}
+
+    /* Cursor visibility boost for dark background */
+    #cx-dot   { background: #fff !important; width: 6px !important; height: 6px !important; }
+    #cx-circle{ border-color: rgba(255,255,255,0.55) !important; }
+    #cx-h, #cx-v { background: rgba(255,255,255,0.1) !important; }
+    #cx-circle.on-cta { border-color: rgba(217,70,239,0.95) !important; box-shadow: 0 0 22px rgba(217,70,239,0.5) !important; }
+    #cx-circle.on-nav { border-color: rgba(217,70,239,0.85) !important; }
+
+
+
+    /* GRID BG */
+    .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+      background-size:80px 80px}
+
+    /* HEADER */
+    .mw-header{position:fixed;top:0;left:0;width:100%;height:66px;padding:0 40px;
+      z-index:500;display:flex;align-items:center;justify-content:space-between;
+      background:rgba(4,2,14,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      border-bottom:1px solid rgba(255,255,255,0.06)}
+    .logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:5px;
+      text-transform:uppercase;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .logo-sq{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#ffcc33,#d4a017);
+      display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
+      box-shadow:0 0 16px rgba(255,204,51,0.4)}
+    .mw-nav{display:flex;gap:0}
+    .mw-nav a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+      color:rgba(255,255,255,.35);text-decoration:none;padding:6px 14px;transition:color .2s}
+    .mw-nav a:hover{color:rgba(255,255,255,.75)}
+    .mw-nav a.active{color:#d946ef}
+
+    /* VIBE LAYOUT */
+    .vibe-wrap{position:fixed;inset:0;z-index:2;padding-top:66px;
+      display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;overflow:hidden}
+
+    .vibe-left{padding:0 52px;display:flex;flex-direction:column;gap:0}
+    .vibe-tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;
+      text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px;display:flex;gap:18px}
+    .vibe-heading{font-family:'Syne',sans-serif;font-size:clamp(64px,8vw,120px);
+      font-weight:800;line-height:.9;letter-spacing:-3px;color:#fff;text-transform:uppercase;
+      animation:fadeUp .8s ease .2s both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+    .vibe-center{display:flex;align-items:center;justify-content:center;position:relative}
+    .vibe-circle{width:clamp(220px,26vw,340px);height:clamp(220px,26vw,340px);
+      border-radius:50%;background:rgba(217,70,239,.15);
+      border:1px solid rgba(255,255,255,.12);
+      display:flex;align-items:center;justify-content:center;position:relative;
+      transition:transform .5s ease,box-shadow .5s ease;flex-shrink:0;cursor:pointer}
+    .vibe-circle:hover{transform:scale(1.06);box-shadow:0 0 80px rgba(217,70,239,.5)}
+    
+    /* Music Disc / Vinyl Effect */
+    .vibe-circle-disk{position:absolute;inset:0;border-radius:50%;
+      background:
+        conic-gradient(from 0deg,rgba(255,255,255,0) 10%,rgba(255,255,255,.45) 25%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.45) 75%,rgba(255,255,255,0) 90%),
+        repeating-radial-gradient(circle,transparent,transparent 8px,rgba(255,255,255,.08) 8px,rgba(255,255,255,.08) 9px),
+        linear-gradient(135deg,#d946ef,#7c3aed);
+      animation:spinDisk 6s linear infinite;pointer-events:none}
+    
+    .vibe-circle-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:28%;height:28%;border-radius:50%;background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;z-index:2}
+    
+    .vibe-dot{position:absolute;top:15px;left:50%;transform:translateX(-50%);
+      width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 15px rgba(255,255,255,.8);z-index:3}
+    
+    @keyframes spinDisk{to{transform:rotate(360deg)}}
+    
+    .play-icon{width:0;height:0;border-style:solid;margin-left:8px;position:relative;z-index:3;
+      border-width:22px 0 22px 38px;border-color:transparent transparent transparent #fff;
+      filter:drop-shadow(0 0 10px rgba(255,255,255,0.4))}
+
+    .vibe-right{padding:0 52px;display:flex;flex-direction:column;gap:18px;text-align:right;
+      font-family:'Cormorant Garamond',serif}
+    .vibe-right p{font-size:clamp(24px,2.5vw,36px);font-weight:300;
+      color:rgba(255,255,255,.5);line-height:1.3;
+      animation:fadeUp .8s ease calc(.2s + var(--d)) both}
+
+    /* OVERLAY */
+    .mood-overlay{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      /* FIX: explicit height so sticky child works */
+      height:100vh;
+      z-index:600;
+      background:#04020e;
+      display:flex;
+      flex-direction:column;
+      transform:translateY(100%);
+      transition:transform .7s cubic-bezier(.16,1,.3,1);
+      /* FIX: overflow on the overlay itself, not a child, so sticky works */
+      overflow-y:auto;
+      overscroll-behavior:contain;
+    }
+    .mood-overlay.open{transform:translateY(0)}
+
+    /* FIX: use position:sticky — now works because overflow is on the scrolling ancestor (.mood-overlay) */
+    .overlay-header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      height:58px;
+      padding:0 40px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:rgba(4,2,14,0.95);
+      backdrop-filter:blur(24px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      flex-shrink:0;
+    }
+    .overlay-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;
+      text-transform:uppercase;color:rgba(255,255,255,.4)}
+    .overlay-close{
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+      color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;
+      text-transform:uppercase;padding:8px 18px;transition:background .2s;flex-shrink:0;
+      cursor:pointer}
+    .overlay-close:hover{background:rgba(255,255,255,.15)}
+
+    .mood-grid-wrap{
+      padding:48px 52px;
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:24px;
+      /* FIX: removed flex:1 — not needed, natural height flow is correct */
+    }
+
+    .mood-card{position:relative;border-radius:16px;overflow:hidden;
+      aspect-ratio:3/2;display:flex;align-items:flex-end;padding:24px;
+      transition:transform .35s,box-shadow .35s}
+    .mood-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .mood-card-bg{position:absolute;inset:0;transition:transform .5s ease}
+    .mood-card:hover .mood-card-bg{transform:scale(1.05)}
+    .mood-card-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%)}
+    .mood-card-content{position:relative;z-index:1;width:100%}
+    .mood-number{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;opacity:.7;margin-bottom:6px}
+    .mood-name{font-family:'Syne',sans-serif;font-size:clamp(16px, 1.5vw, 20px);font-weight:800;text-transform:uppercase;margin-bottom:4px;letter-spacing:-1px}
+    .mood-desc{font-size:12px;opacity:.75;line-height:1.4}
+
+    /* FIX: --accent set per card so each button matches its card's color */
+    .mc-happy  { --accent: #fbbf24 }
+    .mc-chill  { --accent: #0ea5e9 }
+    .mc-sad    { --accent: #7c3aed }
+    .mc-energetic { --accent: #ef4444 }
+    .mc-focus  { --accent: #0891b2 }
+    .mc-night  { --accent: #818cf8 }
+    .mc-player  { --accent: #d946ef }
+
+    .mood-btn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+      font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;
+      padding:8px 16px;border:1px solid var(--accent,#ffcc33);color:#fff;
+      text-decoration:none;transition:all .25s;border-radius:4px}
+    .mood-btn:hover{background:var(--accent,#ffcc33);color:#000;box-shadow:0 0 20px color-mix(in srgb,var(--accent) 40%,transparent)}
+
+    /* Mood card backgrounds */
+    .mc-happy .mood-card-bg{background:linear-gradient(135deg,#f59e0b,#fbbf24,#d97706)}
+    .mc-chill .mood-card-bg{background:linear-gradient(135deg,#0ea5e9,#0284c7,#075985)}
+    .mc-sad .mood-card-bg{background:linear-gradient(135deg,#7c3aed,#6d28d9,#4c1d95)}
+    .mc-energetic .mood-card-bg{background:linear-gradient(135deg,#ea580c,#dc2626,#b91c1c)}
+    .mc-focus .mood-card-bg{background:linear-gradient(135deg,#0891b2,#0e7490,#155e75)}
+    .mc-night .mood-card-bg{background:linear-gradient(135deg,#1e1b4b,#312e81,#1e3a5f)}
+    .mc-player .mood-card-bg{background:linear-gradient(135deg,#d946ef,#8b00ff,#00c8ff)}
+
+    /* MOBILE FIX: compensate for fixed header, avoid collapsed layout */
+    @media(max-width:768px){
+      /* FIX: switch vibe-wrap to scroll instead of fixed, add proper top padding */
+      .vibe-wrap{
+        position:fixed;
+        grid-template-columns:1fr;
+        padding:80px 20px 20px; /* 80px = header height + gap */
+        gap:40px;
+        overflow-y:auto;
+        align-items:start;
+      }
+      .vibe-left,.vibe-right{padding:0}
+      .vibe-right{text-align:left}
+      .vibe-heading{font-size:72px}
+      .mood-grid-wrap{
+        /* FIX: horizontal padding prevents card overflow on narrow viewports */
+        padding:30px 16px;
+        grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      }
+      .mw-nav{display:none}
+      .overlay-header{padding:0 16px}
+    }
+
+    /* FIX: intermediate breakpoint to prevent card overflow between 500–768px */
+    @media(max-width:600px){
+      .mood-grid-wrap{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header class="mw-header">
+  <a href="index.html" class="logo"><div class="logo-sq">🎵</div>MoodWave</a>
+  <nav class="mw-nav">
+    <a href="index.html">Home</a>
+    <a href="mood.html" class="active">Vibe Check</a>
+    <a href="player.html">Player</a>
+    <a href="discover.html">Discover</a>
+    <a href="live.html">Live Stage</a>
+    <a href="about.html">About</a>
+    <a href="visualizer.html">Visualizer</a>
+  </nav>
+</header>
+
+<div class="vibe-wrap">
+  <div class="vibe-left">
+    <div class="vibe-tag">
+      <span>Vol. 1</span><span>Mood Edition</span><span>All Genres</span>
+    </div>
+    <div class="vibe-heading">Vibe<br>Check.</div>
+  </div>
+  <div class="vibe-center">
+    <div class="vibe-circle" id="openMoods" title="Open Moods" role="button" tabindex="0" aria-label="Open mood selector">
+      <div class="vibe-circle-disk"></div>
+      <div class="vibe-circle-label"></div>
+      <div class="vibe-dot"></div>
+      <div class="play-icon"></div>
+    </div>
+  </div>
+  <div class="vibe-right">
+    <p style="--d:0s">Six moods.</p>
+    <p style="--d:.1s">Infinite music.</p>
+    <p style="--d:.2s">What color is<br>your energy today?</p>
+  </div>
+</div>
+
+<div class="mood-overlay" id="moodOverlay" aria-modal="true" role="dialog" aria-label="Choose your mood">
+
+  <div class="overlay-header">
+    <span class="overlay-title">Choose Your Mood</span>
+    <button class="overlay-close" id="closeMoods" aria-label="Close mood selector">✕ &nbsp;Close</button>
+  </div>
+
+  <div class="mood-grid-wrap">
+    <div class="mood-card mc-happy">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">01</div>
+        <div class="mood-name">Happy</div>
+        <div class="mood-desc">Feel-good anthems to lift your spirits sky high.</div>
+        <a href="happy.html" class="mood-btn">Listen →</a>
+      </div>
+    </div>
+    <div class="mood-card mc-chill">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">02</div>
+        <div class="mood-name">Chill</div>
+        <div class="mood-desc">Smooth, laid-back vibes for your downtime.</div>
+        <a href="chill.html" class="mood-btn">Listen →</a>
+      </div>
+    </div>
+    <div class="mood-card mc-sad">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">03</div>
+        <div class="mood-name">Sad</div>
+        <div class="mood-desc">Cathartic melodies for tender moments.</div>
+        <a href="sad.html" class="mood-btn">Listen →</a>
+      </div>
+    </div>
+    <div class="mood-card mc-energetic">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">04</div>
+        <div class="mood-name">Energetic</div>
+        <div class="mood-desc">High-octane bangers to fuel your fire.</div>
+        <a href="energetic.html" class="mood-btn">Listen →</a>
+      </div>
+    </div>
+    <div class="mood-card mc-night">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">05</div>
+        <div class="mood-name">Night</div>
+        <div class="mood-desc">Late-night drives and city lights soundtrack.</div>
+        <a href="night.html" class="mood-btn">Listen →</a>
+      </div>
+    </div>
+    <div class="mood-card mc-focus">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">06</div>
+        <div class="mood-name">Focus</div>
+        <div class="mood-desc">Deep concentration and flow state music.</div>
+        <a href="focus.html" class="mood-btn">Listen →</a>
+      </div>
+    </div>
+    <div class="mood-card mc-player">
+      <div class="mood-card-bg"></div>
+      <div class="mood-card-content">
+        <div class="mood-number">07</div>
+        <div class="mood-name">Player</div>
+        <div class="mood-desc">Blend multiple moods into one custom playlist.</div>
+        <a href="player.html" class="mood-btn">Mix Now →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById('moodOverlay');
+  const openBtn = document.getElementById('openMoods');
+  const closeBtn = document.getElementById('closeMoods');
+
+  function openOverlay() {
+    overlay.classList.add('open');
+    overlay.scrollTop = 0;
+    closeBtn.focus();
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    openBtn.focus();
+  }
+
+  openBtn.addEventListener('click', openOverlay);
+  closeBtn.addEventListener('click', closeOverlay);
+
+  // FIX: keyboard support for the vibe circle (div acting as button)
+  openBtn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openOverlay(); }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();
+  });
+
+
+</script>
+<script src="mw-cursor.js"></script>
+</body>
+</html>

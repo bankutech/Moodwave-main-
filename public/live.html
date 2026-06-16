@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Stage — MoodWave</title>
+  <meta name="description" content="Tune in to real-time performances, concerts, and sets matched to the MoodWave vibe."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+  <link rel="stylesheet" href="mw-global.css"/>
+  <style>
+    html,body{overflow-x:hidden}
+    .bg-dark{background:linear-gradient(180deg,#07020f 0%,#0d0418 50%,#07020f 100%);min-height:100vh}
+
+    /* HERO */
+    .live-hero{padding:100px 80px 60px;text-align:center;position:relative;z-index:1}
+    .live-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px}
+    .live-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,88px);font-weight:400;line-height:1.05;margin-bottom:20px}
+    .live-h1 .pink{color:#f472b6}.live-h1 .blue{color:#a78bfa}.live-h1 .white{color:#fff}
+    .live-sub{font-size:16px;color:rgba(255,255,255,.5);max-width:500px;margin:0 auto 60px;line-height:1.7}
+
+    /* Live dot indicator top */
+    .live-indicator{position:absolute;top:120px;right:100px;width:10px;height:10px;border-radius:50%;background:#e11d48;box-shadow:0 0 12px rgba(225,29,72,.6);animation:blink 1s step-start infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+    /* CARDS GRID */
+    .live-cards-section{padding:0 60px 80px;position:relative;z-index:1}
+    .live-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+    .live-card{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;cursor:pointer;transition:transform .35s,box-shadow .35s}
+    .live-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(255,204,51,.15);border:1px solid rgba(255,204,51,0.2)}
+    .live-card-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .live-card-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px}
+    .live-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,rgba(0,0,0,.1) 60%,transparent 100%)}
+    .live-tag{position:absolute;top:14px;left:14px;z-index:2}
+    .live-card-info{position:absolute;bottom:0;left:0;right:0;padding:20px;z-index:2}
+    .live-card-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+    .live-card-artist{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+    .live-card-vevo{position:absolute;bottom:14px;right:14px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4)}
+
+    /* PLAYER SECTION */
+    .live-player{padding:40px 60px 60px;background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.05)}
+    .live-player-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#ffcc33;margin-bottom:28px}
+    .live-embed-wrap{position:relative;padding-bottom:56.25%;background:#000;border-radius:8px;overflow:hidden;margin-bottom:28px}
+    .live-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%}
+    .live-embed-wrap .no-video{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.2);font-family:'DM Mono',monospace;font-size:12px;gap:16px}
+    .live-embed-wrap .no-video .icon{font-size:48px}
+
+    /* Custom URL input */
+    .live-url-wrap{display:flex;gap:0;margin-bottom:20px}
+    .live-url-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-right:none;color:#fff;font-family:'DM Mono',monospace;font-size:13px;padding:12px 20px;outline:none;transition:border-color .2s}
+    .live-url-input::placeholder{color:rgba(255,255,255,.25)}
+    .live-url-input:focus{border-color:rgba(217,70,239,.4)}
+    .live-url-btn{background:rgba(255,204,51,.1);border:1px solid rgba(255,204,51,.3);color:#ffcc33;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:0 24px;cursor:pointer;transition:all .2s}
+    .live-url-btn:hover{background:rgba(255,204,51,.25);box-shadow:0 0 15px rgba(255,204,51,0.2)}
+
+    @media(max-width:768px){.live-hero{padding:80px 24px 40px}.live-cards-section{padding:0 20px 60px}.live-player{padding:30px 24px 50px}.live-h1{font-size:44px}.live-indicator{top:88px;right:24px}}
+  </style>
+</head>
+<body class="bg-dark">
+<header class="mw-header">
+  <a href="index.html" class="logo"><div class="logo-sq">🎵</div>MoodWave</a>
+  <nav class="mw-nav">
+    <a href="index.html">Home</a>
+    <a href="mood.html">Vibe Check</a>
+    <a href="player.html">Player</a>
+    <a href="discover.html">Discover</a>
+    <a href="live.html" class="active">Live Stage</a>
+    <a href="about.html">About</a>
+    <a href="visualizer.html">Visualizer</a>
+  </nav>
+</header>
+
+<div class="mw-page">
+  <!-- HERO -->
+  <section class="live-hero">
+    <div class="live-indicator"></div>
+    <div class="live-eyebrow">The Live Experience</div>
+    <h1 class="live-h1">
+      <span class="pink">Live </span><span class="blue">Music </span><span class="white">Sessions</span>
+    </h1>
+    <p class="live-sub">Tune in to real-time performances, concerts, and sets matched to the MoodWave vibe.</p>
+  </section>
+
+  <!-- LIVE CARDS -->
+  <section class="live-cards-section">
+    <div class="live-cards-grid" id="liveCardsGrid">
+      <div style="color:rgba(255,255,255,.3);grid-column:1/-1;text-align:center;padding:40px;font-family:'DM Mono',monospace;">
+        Loading live streams...
+      </div>
+    </div>
+  </section>
+
+  <!-- EMBEDDED PLAYER -->
+  <section class="live-player">
+    <div class="live-player-title">▶ Now Streaming</div>
+    <div class="live-embed-wrap" id="embedWrap">
+      <div class="no-video">
+        <div class="icon">📺</div>
+        Select a stream above to play it here
+      </div>
+    </div>
+    <!-- Custom URL -->
+    <div class="live-url-wrap">
+      <input type="text" class="live-url-input" id="liveUrlInput" placeholder="Paste a YouTube URL to stream it here…"/>
+      <button class="live-url-btn" id="liveUrlBtn">Play →</button>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.2)">
+      Supports: youtube.com/watch?v=... or youtu.be/...
+    </div>
+  </section>
+
+  <footer class="mw-footer">
+    <span>© 2026 MoodWave</span>
+    <span>Live · Powered by YouTube</span>
+    <a href="mood.html" style="color:rgba(255,255,255,.2);text-decoration:none">← Moods</a>
+  </footer>
+</div>
+
+<script>
+function embedVideo(videoId){
+  document.getElementById('embedWrap').innerHTML=`
+    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
+      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen="allowfullscreen" webkitallowfullscreen mozallowfullscreen></iframe>`;
+}
+
+async function loadLiveStreams(){
+  try {
+    const res = await fetch('/api/live-streams?t=' + Date.now());
+    const streams = await res.json();
+    const grid = document.getElementById('liveCardsGrid');
+    
+    if(!streams || streams.length === 0) {
+      grid.innerHTML = '<div style="color:rgba(255,255,255,.2);grid-column:1/-1;text-align:center;padding:40px;">No live streams found in database.</div>';
+      return;
+    }
+
+    function getYTId(urlOrId) {
+      if(!urlOrId) return '';
+      if(urlOrId.length === 11) return urlOrId;
+      const m1=urlOrId.match(/[?&]v=([^&]+)/);
+      const m2=urlOrId.match(/youtu\.be\/([^?]+)/);
+      const m3=urlOrId.match(/youtube\.com\/live\/([^?]+)/);
+      if(m1) return m1[1];
+      if(m2) return m2[1];
+      if(m3) return m3[1];
+      return urlOrId;
+    }
+
+    grid.innerHTML = streams.map(s => {
+      const vid = getYTId(s.youtube_video_id);
+      return `
+      <div class="live-card" data-video-id="${vid}" title="Play ${s.stream_title}">
+        <img class="live-card-thumb" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="${s.stream_title}">
+        <div class="live-card-overlay"></div>
+        <div class="live-tag"><span class="live-pill">LIVE</span></div>
+        <div class="live-card-info">
+          <div class="live-card-title">${s.stream_title}</div>
+          <div class="live-card-artist">${s.artist_name}</div>
+        </div>
+        ${s.is_live ? '<div class="live-card-vevo">((•)) STREAMING</div>' : ''}
+      </div>`;
+    }).join('');
+
+    document.querySelectorAll('.live-card').forEach(card=>{
+      card.addEventListener('click',()=>{
+        const vid=card.dataset.videoId;
+        if(vid){embedVideo(vid);document.getElementById('embedWrap').scrollIntoView({behavior:'smooth',block:'start'});}
+      });
+    });
+  } catch(e) {
+    console.error('Failed to load live streams:', e);
+  }
+}
+
+loadLiveStreams();
+
+document.getElementById('liveUrlBtn').addEventListener('click',()=>{
+  const val=document.getElementById('liveUrlInput').value.trim();
+  let vid='';
+  const m1=val.match(/[?&]v=([^&]+)/);
+  const m2=val.match(/youtu\.be\/([^?]+)/);
+  const m3=val.match(/youtube\.com\/live\/([^?]+)/);
+  if(m1)vid=m1[1]; else if(m2)vid=m2[1]; else if(m3)vid=m3[1];
+  if(vid){embedVideo(vid);document.getElementById('liveUrlInput').value='';}
+  else alert('Please enter a valid YouTube URL.');
+});
+
+document.getElementById('liveUrlInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    document.getElementById('liveUrlBtn').click();
+  }
+});
+</script>
+<script src="mw-cursor.js"></script>
+</body>
+</html>

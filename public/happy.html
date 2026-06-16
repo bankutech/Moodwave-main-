@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy — MoodWave</title>
+  <meta name="description" content="Feel-good anthems to lift your spirits sky high. MoodWave Happy playlist."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+  <link rel="stylesheet" href="mw-global.css"/>
+  <style>
+    :root{--mood-bg:#f59e0b;--mood-bg2:#d97706;--mood-text:#1a0f00;--mood-accent:#b45309}
+    html,body{overflow-x:hidden}
+    .mw-page{padding-top:0!important} /* Fix header gap */
+
+    /* HERO — full screen yellow panel */
+    .mood-hero{
+      min-height:100vh;padding-top:66px;
+      background:linear-gradient(135deg,var(--mood-bg) 0%,var(--mood-bg2) 100%);
+      display:grid;grid-template-columns:1fr 1fr;align-items:center;
+      position:relative;overflow:hidden}
+    .hero-texture{position:absolute;inset:0;
+      background-image:repeating-linear-gradient(
+        0deg,rgba(255,255,255,.06) 0px,rgba(255,255,255,.06) 1px,transparent 1px,transparent 40px),
+      repeating-linear-gradient(
+        90deg,rgba(255,255,255,.06) 0px,rgba(255,255,255,.06) 1px,transparent 1px,transparent 40px);
+      pointer-events:none}
+    .hero-left{padding:80px 60px;position:relative;z-index:1}
+    .hero-number{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;
+      text-transform:uppercase;color:var(--mood-accent);margin-bottom:24px}
+    .hero-mood{font-family:'Syne',sans-serif;font-size:clamp(72px,12vw,140px);
+      font-weight:800;text-transform:uppercase;color:var(--mood-text);
+      line-height:.9;letter-spacing:-4px;margin-bottom:28px}
+    .hero-desc{font-size:16px;font-style:italic;color:rgba(26,15,0,.65);
+      max-width:280px;line-height:1.6;margin-bottom:32px}
+    .hero-listen{display:inline-flex;align-items:center;gap:8px;
+      font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;
+      color:var(--mood-text);padding:10px 22px;
+      border:1px solid rgba(26,15,0,.4);transition:all .25s}
+    .hero-listen:hover{background:rgba(26,15,0,.1);border-color:var(--mood-text)}
+
+    .hero-right{display:flex;align-items:center;justify-content:center;
+      padding:40px;position:relative;z-index:1}
+    .play-dial{width:clamp(180px,22vw,280px);height:clamp(180px,22vw,280px);
+      border-radius:50%;background:rgba(26,15,0,.12);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:transform .4s,box-shadow .4s;position:relative}
+    .play-dial:hover{transform:scale(1.04);box-shadow:0 0 50px rgba(26,15,0,.2)}
+    .play-dial-dot{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+      background:conic-gradient(from 0deg,rgba(26,15,0,0) 10%,rgba(26,15,0,.15) 25%,rgba(26,15,0,0) 40%,rgba(26,15,0,0) 60%,rgba(26,15,0,.15) 75%,rgba(26,15,0,0) 90%),
+      repeating-radial-gradient(circle,transparent,transparent 8px,rgba(26,15,0,.08) 8px,rgba(26,15,0,.08) 9px)}
+    .play-dial-dot::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:25%;height:25%;border-radius:50%;border:1px solid rgba(26,15,0,.2);background:rgba(26,15,0,.05)}
+    .play-dial-dot::after{content:'';position:absolute;top:12px;left:50%;transform:translateX(-50%);
+      width:8px;height:8px;border-radius:50%;background:rgba(26,15,0,.6)}
+    @keyframes spinDisk { to { transform: rotate(360deg); } }
+    .play-dial.playing .play-dial-dot{animation:spinDisk 4s linear infinite}
+    .play-icon-d{width:0;height:0;border-style:solid;margin-left:8px;
+      border-width:18px 0 18px 30px;border-color:transparent transparent transparent rgba(26,15,0,.7)}
+    .play-dial.playing .play-icon-d{display:none}
+    .pause-icon{display:none;gap:5px}
+    .pause-bar{width:5px;height:28px;background:rgba(26,15,0,.7);border-radius:2px}
+    .play-dial.playing .pause-icon{display:flex}
+
+    /* TRACK INFO */
+    .now-playing{padding:20px 60px;background:rgba(0,0,0,.06);
+      font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;
+      color:var(--mood-text);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    .np-label{opacity:.5;text-transform:uppercase;font-size:10px;letter-spacing:2px}
+    .np-title{font-weight:600}
+    .np-artist{opacity:.65}
+
+    /* PLAYER SECTION */
+    .player-section{background:#04020e;padding:60px 52px}
+    .player-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:20px}
+    .player-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+      letter-spacing:3px;text-transform:uppercase;color:#f59e0b}
+    .player-controls-top{display:flex;gap:12px}
+    .ctrl-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:rgba(255,255,255,.6);font-family:'DM Mono',monospace;font-size:11px;
+      letter-spacing:1px;padding:8px 16px;cursor:pointer;transition:all .2s}
+    .ctrl-btn:hover{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.4);color:#f59e0b}
+    .ctrl-btn.active{background:rgba(245,158,11,.2);border-color:#f59e0b;color:#f59e0b}
+
+    .track-list{display:flex;flex-direction:column;gap:2px}
+    .track-item{display:grid;grid-template-columns:40px 1fr auto auto;align-items:center;gap:16px;
+      padding:14px 16px;border-radius:8px;cursor:pointer;transition:background .2s;
+      border:1px solid transparent}
+    .track-item:hover{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.15)}
+    .track-item.active{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.25)}
+    .track-num{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.3);text-align:center}
+    .track-item.active .track-num{color:#f59e0b}
+    .track-info .track-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:3px}
+    .track-info .track-artist{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.4)}
+    .track-item.active .track-name{color:#f59e0b}
+    .track-mood-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;
+      padding:3px 8px;border-radius:4px;background:rgba(245,158,11,.15);color:#f59e0b}
+    .track-dur{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.3)}
+
+    /* Progress bar */
+    .progress-wrap{background:#04020e;padding:0 52px 40px}
+    .progress-bar-bg{height:2px;background:rgba(255,255,255,.08);border-radius:1px;cursor:pointer;position:relative}
+    .progress-bar-fill{height:100%;background:#f59e0b;border-radius:1px;width:0%;transition:width .3s linear;position:relative}
+    .progress-bar-fill::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);
+      width:8px;height:8px;border-radius:50%;background:#f59e0b}
+    .progress-times{display:flex;justify-content:space-between;margin-top:8px;
+      font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.3)}
+
+    /* Main playback controls */
+    .main-controls{background:#04020e;padding:0 52px 52px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+    .mc-btn{width:44px;height:44px;border-radius:50%;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      display:flex;align-items:center;justify-content:center;
+      color:rgba(255,255,255,.6);cursor:pointer;font-size:16px;
+      transition:all .2s}
+    .mc-btn:hover{background:rgba(245,158,11,.2);border-color:#f59e0b;color:#f59e0b}
+    .mc-play{width:54px;height:54px;background:#f59e0b;border:none;color:#04020e;font-size:20px}
+    .mc-play:hover{background:#fbbf24;transform:scale(1.05)}
+    .vol-wrap{display:flex;align-items:center;gap:10px;margin-left:auto}
+    .vol-icon{font-size:14px;color:rgba(255,255,255,.4)}
+    .vol-slider{-webkit-appearance:none;width:100px;height:2px;
+      background:rgba(255,255,255,.15);outline:none;cursor:pointer}
+    .vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;
+      border-radius:50%;background:#f59e0b;cursor:pointer}
+
+    /* Visualizer canvas */
+    .viz-wrap{background:#04020e;padding:0 52px 20px}
+    #vizCanvas{width:100%;height:60px;opacity:.7}
+
+    @media(max-width:768px){
+      .mood-hero{grid-template-columns:1fr;min-height:auto}
+      .hero-left{padding:60px 24px 30px}.hero-right{padding:20px 24px 40px}
+      .player-section,.progress-wrap,.main-controls,.viz-wrap{padding-left:24px;padding-right:24px}
+      .now-playing{padding:16px 24px}
+      .track-item{grid-template-columns:30px 1fr auto}}
+  </style>
+</head>
+<body>
+<header class="mw-header">
+  <a href="index.html" class="logo"><div class="logo-sq">🎵</div>MoodWave</a>
+  <nav class="mw-nav">
+    <a href="index.html">Home</a>
+    <a href="mood.html">Vibe Check</a>
+    <a href="player.html">Player</a>
+    <a href="discover.html">Discover</a>
+    <a href="live.html">Live Stage</a>
+    <a href="about.html">About</a>
+    <a href="visualizer.html">Visualizer</a>
+  </nav>
+</header>
+
+<div class="mw-page">
+  <!-- HERO -->
+  <section class="mood-hero">
+    <div class="hero-texture"></div>
+    <div class="hero-left">
+      <div class="hero-number">01 · Happy Mood</div>
+      <div class="hero-mood">Happy</div>
+      <div class="hero-desc">Feel-good anthems to lift your spirits sky high.</div>
+      <a href="#player" class="hero-listen">Listen →</a>
+    </div>
+    <div class="hero-right">
+      <div class="play-dial" id="heroPlayBtn" title="Play">
+        <div class="play-dial-dot"></div>
+        <div class="play-icon-d"></div>
+        <div class="pause-icon"><div class="pause-bar"></div><div class="pause-bar"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOW PLAYING STRIP -->
+  <div class="now-playing" id="nowPlayingStrip">
+    <span class="np-label">Now Playing</span>
+    <span class="np-title" id="npTitle">—</span>
+    <span class="np-artist" id="npArtist"></span>
+    <span class="db-sync"><span class="db-sync-dot" id="syncDot"></span>DB SYNCED</span>
+  </div>
+
+  <!-- VISUALIZER -->
+  <div class="viz-wrap"><canvas id="vizCanvas"></canvas></div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="player">
+    <div class="progress-bar-bg" id="progressBg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-times">
+      <span id="timeElapsed">0:00</span>
+      <span id="timeDuration">0:00</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="main-controls">
+    <button class="mc-btn" id="shuffleBtn" title="Shuffle">⇌</button>
+    <button class="mc-btn" id="prevBtn" title="Previous">⏮</button>
+    <button class="mc-btn mc-play" id="mainPlayBtn" title="Play/Pause">▶</button>
+    <button class="mc-btn" id="nextBtn" title="Next">⏭</button>
+    <button class="mc-btn" id="loopBtn" title="Loop">↺</button>
+    <div class="vol-wrap">
+      <span class="vol-icon">🔈</span>
+      <input type="range" class="vol-slider" id="volSlider" min="0" max="1" step="0.01" value="0.8"/>
+      <span class="vol-icon">🔊</span>
+    </div>
+  </div>
+
+  <!-- TRACK LIST -->
+  <div class="player-section">
+    <div class="player-header">
+      <div class="player-title">🎵 Happy Playlist</div>
+      <div class="player-controls-top">
+        <button class="ctrl-btn" id="shuffleAllBtn">Shuffle All</button>
+        <button class="ctrl-btn" id="loopAllBtn">Loop</button>
+      </div>
+    </div>
+    <div class="track-list" id="trackList"></div>
+  </div>
+
+  <footer class="mw-footer">
+    <span>© 2026 MoodWave</span>
+    <span>6 Moods · 180+ Tracks</span>
+    <a href="mood.html" style="color:rgba(255,255,255,.2);text-decoration:none">← Back to Moods</a>
+  </footer>
+</div>
+
+<audio id="audioEl"></audio>
+
+<script>
+const MOOD = 'Happy';
+const ACCENT = '#f59e0b';
+let tracks = [], currentIdx = 0, isPlaying = false, isLoop = false, isShuffle = false;
+
+const audioEl    = document.getElementById('audioEl');
+const trackList  = document.getElementById('trackList');
+const mainPlayBtn= document.getElementById('mainPlayBtn');
+const heroPlayBtn= document.getElementById('heroPlayBtn');
+const prevBtn    = document.getElementById('prevBtn');
+const nextBtn    = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const loopBtn    = document.getElementById('loopBtn');
+const progressFill=document.getElementById('progressFill');
+const progressBg =document.getElementById('progressBg');
+const timeElapsed=document.getElementById('timeElapsed');
+const timeDuration=document.getElementById('timeDuration');
+const volSlider  = document.getElementById('volSlider');
+const npTitle    = document.getElementById('npTitle');
+const npArtist   = document.getElementById('npArtist');
+const vizCanvas  = document.getElementById('vizCanvas');
+const ctx2d      = vizCanvas.getContext('2d');
+const loopAllBtn = document.getElementById('loopAllBtn');
+function toggleLoop(){isLoop=!isLoop;if(loopAllBtn)loopAllBtn.classList.toggle('active',isLoop);}
+
+// Visualizer
+let analyser, dataArr, audioCtx, sourceNode;
+function initViz(){
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 128;
+  dataArr = new Uint8Array(analyser.frequencyBinCount);
+  sourceNode = audioCtx.createMediaElementSource(audioEl);
+  sourceNode.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
+function drawViz(){
+  requestAnimationFrame(drawViz);
+  if(!analyser){vizCanvas.width=vizCanvas.offsetWidth;vizCanvas.height=60;return}
+  vizCanvas.width=vizCanvas.offsetWidth;vizCanvas.height=60;
+  analyser.getByteFrequencyData(dataArr);
+  ctx2d.clearRect(0,0,vizCanvas.width,60);
+  const bw = vizCanvas.width / dataArr.length;
+  for(let i=0;i<dataArr.length;i++){
+    const h = (dataArr[i]/255)*55;
+    ctx2d.fillStyle=ACCENT;
+    ctx2d.globalAlpha=0.7;
+    ctx2d.fillRect(i*bw, 60-h, bw-1, h);
+  }
+  ctx2d.globalAlpha=1;
+}
+drawViz();
+
+function fmt(s){const m=Math.floor(s/60);return m+':'+(Math.floor(s%60)+'').padStart(2,'0')}
+
+const syncDot=document.getElementById('syncDot');
+async function loadTracks(isRefresh){try{const data=await fetch('/songs?mood='+MOOD+'&t='+Date.now()).then(r=>r.json());tracks=data.filter(s=>(s.mood||'').toLowerCase()===MOOD.toLowerCase());if(syncDot){syncDot.className='db-sync-dot';}}catch(e){if(!isRefresh)tracks=[];if(syncDot){syncDot.className='db-sync-dot error';}}renderList();if(!isRefresh&&tracks.length) loadTrack(0);}
+
+function renderList(){
+  trackList.innerHTML = tracks.map((t,i)=>`
+    <div class="track-item${i===currentIdx?' active':''}" data-i="${i}">
+      <div class="track-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="track-info">
+        <div class="track-name">${t.title}</div>
+        <div class="track-artist">${t.artist||''}</div>
+      </div>
+      <div class="track-mood-tag">${t.mood}</div>
+      <div class="track-dur" id="dur-${i}">—</div>
+    </div>`).join('');
+  trackList.querySelectorAll('.track-item').forEach(el=>{
+    el.addEventListener('click',()=>{ loadTrack(+el.dataset.i); play(); });
+  });
+}
+
+function loadTrack(i){
+  currentIdx = i;
+  const t = tracks[i];
+  audioEl.src = t.audio_url;
+  npTitle.textContent = t.title;
+  npArtist.textContent = t.artist||'';
+  document.title = `${t.title} — MoodWave`;
+  progressFill.style.width='0%';
+  timeElapsed.textContent='0:00';
+  timeDuration.textContent='0:00';
+  renderList();
+  audioEl.load();
+  audioEl.addEventListener('loadedmetadata',()=>{
+    timeDuration.textContent=fmt(audioEl.duration);
+    const el=document.getElementById('dur-'+i);
+    if(el)el.textContent=fmt(audioEl.duration);
+  },{once:true});
+}
+
+function play(){
+  initViz();
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+  audioEl.play();isPlaying=true;
+  mainPlayBtn.textContent='⏸';heroPlayBtn.classList.add('playing');
+}
+function pause(){
+  audioEl.pause();isPlaying=false;
+  mainPlayBtn.textContent='▶';heroPlayBtn.classList.remove('playing');
+}
+
+mainPlayBtn.addEventListener('click',()=>{ if(isPlaying)pause();else play(); });
+heroPlayBtn.addEventListener('click',()=>{ if(isPlaying)pause();else play(); });
+prevBtn.addEventListener('click',()=>{ loadTrack((currentIdx-1+tracks.length)%tracks.length); play(); });
+nextBtn.addEventListener('click',()=>{ loadTrack((currentIdx+1)%tracks.length); play(); });
+
+audioEl.addEventListener('ended',()=>{
+  if(isLoop){audioEl.currentTime=0;play();}
+  else if(isShuffle){loadTrack(Math.floor(Math.random()*tracks.length));play();}
+  else if(currentIdx<tracks.length-1){loadTrack(currentIdx+1);play();}
+  else{isPlaying=false;mainPlayBtn.textContent='▶';heroPlayBtn.classList.remove('playing');}
+});
+
+audioEl.addEventListener('timeupdate',()=>{
+  if(!audioEl.duration)return;
+  const pct=(audioEl.currentTime/audioEl.duration)*100;
+  progressFill.style.width=pct+'%';
+  timeElapsed.textContent=fmt(audioEl.currentTime);
+});
+
+progressBg.addEventListener('click',e=>{
+  if(!audioEl.duration)return;
+  const r=progressBg.getBoundingClientRect();
+  audioEl.currentTime=((e.clientX-r.left)/r.width)*audioEl.duration;
+});
+
+volSlider.addEventListener('input',()=>{ audioEl.volume=volSlider.value; });
+
+loopBtn.addEventListener('click',()=>{audioEl.currentTime=0;play();});
+if(loopAllBtn)loopAllBtn.addEventListener('click',toggleLoop);
+shuffleBtn.addEventListener('click',()=>{ isShuffle=!isShuffle; shuffleBtn.style.color=isShuffle?ACCENT:''; });
+
+document.getElementById('shuffleAllBtn').addEventListener('click',()=>{
+  isShuffle=true;shuffleBtn.style.color=ACCENT;
+  loadTrack(Math.floor(Math.random()*tracks.length));play();
+});
+
+loadTracks();
+// Auto-poll every 3 seconds for real-time DB sync
+setInterval(()=>loadTracks(true),3000);
+</script>
+<script src="mw-cursor.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "moodwave",
+  "version": "1.0.0",
+  "description": "MoodWave — A mood-adaptive music streaming platform",
+  "main": "public/backend/server.js",
+  "scripts": {
+    "start": "node public/backend/server.js",
+    "dev": "node public/backend/server.js"
+  },
+  "keywords": ["music", "mood", "streaming", "nodejs", "express", "mysql"],
+  "author": "bankutech",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bankutech/Moodwave-main-.git"
+  }
+}
+

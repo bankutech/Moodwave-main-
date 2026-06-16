@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Discover — MoodWave</title>
+  <meta name="description" content="Find music that moves you. Search and stream any track powered by Last.fm and YouTube."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+  <link rel="stylesheet" href="mw-global.css"/>
+  <style>
+    html,body{overflow-x:hidden}
+    /* Ambient background orbs */
+    .bg-orb1{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(217,70,239,.12),transparent 70%);top:-100px;left:-100px;pointer-events:none;z-index:0}
+    .bg-orb2{position:fixed;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.1),transparent 70%);bottom:-200px;right:-200px;pointer-events:none;z-index:0}
+    .bg-orb3{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,0,255,.08),transparent 70%);top:30%;right:5%;pointer-events:none;z-index:0;border:1px solid rgba(255,255,255,.05)}
+
+    /* Hero */
+    .discover-hero{min-height:100vh;padding-top:66px;position:relative;z-index:1;
+      display:flex;flex-direction:column;justify-content:center;padding-left:80px;padding-right:80px}
+    .discover-tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:28px}
+    .discover-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(56px,8vw,110px);font-weight:400;line-height:1;letter-spacing:-2px;margin-bottom:32px;max-width:700px}
+    .discover-h1 .plain{color:#fff}
+    .discover-h1 .pink{background:linear-gradient(90deg,#ec4899,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
+    .discover-sub{font-size:16px;color:rgba(255,255,255,.5);max-width:400px;line-height:1.7;margin-bottom:52px}
+
+    /* Search bar */
+    .search-wrap{display:flex;gap:0;max-width:640px;margin-bottom:60px;position:relative;z-index:2}
+    .search-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-right:none;
+      color:#fff;font-family:'Syne',sans-serif;font-size:15px;padding:16px 24px;outline:none;
+      transition:border-color .2s,background .2s}
+    .search-input::placeholder{color:rgba(255,255,255,.3)}
+    .search-input:focus{border-color:rgba(217,70,239,.5);background:rgba(255,255,255,.08)}
+    .search-btn{background:linear-gradient(135deg,#ffcc33,#d4a017);border:none;color:#000;
+      font-family:'DM Mono',monospace;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+      padding:0 32px;cursor:pointer;transition:all .2s;box-shadow:0 0 15px rgba(255,204,51,0.2)}
+    .search-btn:hover{opacity:.85;box-shadow:0 0 25px rgba(255,204,51,0.4)}
+
+    /* Filter chips */
+    .mood-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:52px}
+    .chip{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;
+      padding:7px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
+    .chip:hover,.chip.active{background:rgba(255,204,51,.1);border-color:rgba(255,204,51,.5);color:#fff}
+    .chip.active{background:rgba(255,204,51,.2);box-shadow:0 0 10px rgba(255,204,51,0.1)}
+
+    /* Results */
+    .results-section{position:relative;z-index:1;padding:0 80px 80px}
+    .results-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px}
+    .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .result-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px;cursor:pointer;transition:all .3s;display:flex;gap:16px;align-items:center}
+    .result-card:hover{background:rgba(255,204,51,.05);border-color:rgba(255,204,51,.25);transform:translateY(-2px)}
+    .result-art{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,#ffcc33,#d4a017);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden}
+    .result-art img{width:100%;height:100%;object-fit:cover}
+    .result-info{min-width:0;flex:1}
+    .result-info .result-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .result-info .result-artist{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .result-play-btn{margin-left:auto;width:32px;height:32px;border-radius:50%;background:rgba(255,204,51,.15);border:1px solid rgba(255,204,51,.3);color:#ffcc33;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:all .2s}
+    .result-play-btn:hover{background:rgba(255,204,51,.35);box-shadow:0 0 10px rgba(255,204,51,0.3)}
+
+    /* No results / loading */
+    .discover-placeholder{text-align:center;padding:80px 24px;color:rgba(255,255,255,.2);font-family:'DM Mono',monospace;font-size:13px;letter-spacing:1px}
+    .discover-placeholder .big{font-size:48px;margin-bottom:16px}
+
+    @media(max-width:768px){.discover-hero,.results-section{padding-left:24px;padding-right:24px}.search-wrap{flex-direction:column}.search-btn{padding:14px}.discover-h1{font-size:52px}}
+  </style>
+</head>
+<body>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
+<div class="bg-orb3"></div>
+
+<header class="mw-header">
+  <a href="index.html" class="logo"><div class="logo-sq">🎵</div>MoodWave</a>
+  <nav class="mw-nav">
+    <a href="index.html">Home</a>
+    <a href="mood.html">Vibe Check</a>
+    <a href="player.html">Player</a>
+    <a href="discover.html" class="active">Discover</a>
+    <a href="live.html">Live Stage</a>
+    <a href="about.html">About</a>
+    <a href="visualizer.html">Visualizer</a>
+  </nav>
+</header>
+
+<div class="mw-page">
+  <section class="discover-hero">
+    <div class="discover-tag">Music Discovery · Powered by Mood</div>
+    <h1 class="discover-h1">
+      <span class="plain">Find </span><span class="pink">music</span><span class="plain"> that<br>moves.</span>
+    </h1>
+    <p class="discover-sub">New sounds, trending tracks, and recommendations built around how you actually feel right now.</p>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search any song or artist..." autocomplete="off"/>
+      <button class="search-btn" id="searchBtn">Search →</button>
+    </div>
+
+    <!-- Mood filter chips -->
+    <div class="mood-chips">
+      <div class="chip active" data-mood="">All</div>
+      <div class="chip" data-mood="Happy">😊 Happy</div>
+      <div class="chip" data-mood="Chill">😌 Chill</div>
+      <div class="chip" data-mood="Sad">💔 Sad</div>
+      <div class="chip" data-mood="Energetic">🔥 Energetic</div>
+      <div class="chip" data-mood="Focus">🎧 Focus</div>
+      <div class="chip" data-mood="Night">🌙 Night</div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="results-section">
+    <div class="results-title" id="resultsTitle">All Tracks</div>
+    <div class="results-grid" id="resultsGrid">
+      <div class="discover-placeholder">
+        <div class="big">🎵</div>
+        Loading tracks…
+      </div>
+    </div>
+  </section>
+
+  <footer class="mw-footer">
+    <span>© 2026 MoodWave</span>
+    <span>Powered by Local Library</span>
+    <a href="live.html" style="color:rgba(255,255,255,.2);text-decoration:none">Live Stage →</a>
+  </footer>
+</div>
+
+<audio id="audioEl"></audio>
+
+<script>
+let allTracks=[], filteredTracks=[], currentMood='', currentIdx=-1, isPlaying=false;
+const audioEl=document.getElementById('audioEl');
+const resultsGrid=document.getElementById('resultsGrid');
+const resultsTitle=document.getElementById('resultsTitle');
+
+const fallbackTracks = [];
+
+async function loadAll(){try{const data=await fetch('/songs?t='+Date.now()).then(r=>r.json());allTracks=data&&data.length?data:fallbackTracks;}catch(e){allTracks=fallbackTracks;}applyFilter();}
+
+function applyFilter(q=''){
+  filteredTracks=allTracks.filter(t=>{
+    const moodOk=!currentMood||(t.mood||'').toLowerCase()===currentMood.toLowerCase();
+    const searchOk=!q||((t.title||'').toLowerCase().includes(q)||((t.artist||'').toLowerCase().includes(q)));
+    return moodOk&&searchOk;
+  });
+  render();
+}
+
+function render(){
+  if(!filteredTracks.length){
+    resultsGrid.innerHTML='<div class="discover-placeholder"><div class="big">🔍</div>No tracks found.</div>';
+    resultsTitle.textContent='0 Results';return;
+  }
+  resultsTitle.textContent=`${filteredTracks.length} Track${filteredTracks.length>1?'s':''}`;
+  resultsGrid.innerHTML=filteredTracks.map((t,i)=>`
+    <div class="result-card" data-i="${i}">
+      <div class="result-art">🎵</div>
+      <div class="result-info">
+        <div class="result-title">${t.title}</div>
+        <div class="result-artist">${t.artist||'Unknown'} · <span style="color:rgba(217,70,239,.7)">${t.mood}</span></div>
+      </div>
+      <div class="result-play-btn" data-i="${i}">▶</div>
+    </div>`).join('');
+
+  resultsGrid.querySelectorAll('.result-play-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();playTrack(+btn.dataset.i);});
+  });
+  resultsGrid.querySelectorAll('.result-card').forEach(card=>{
+    card.addEventListener('click',()=>playTrack(+card.dataset.i));
+  });
+}
+
+function playTrack(i){
+  const t=filteredTracks[i];currentIdx=i;
+  audioEl.src=t.audio_url;audioEl.load();audioEl.play();isPlaying=true;
+  // Update play buttons
+  resultsGrid.querySelectorAll('.result-play-btn').forEach((b,j)=>{b.textContent=j===i?'⏸':'▶';});
+}
+
+audioEl.addEventListener('ended',()=>{
+  if(currentIdx<filteredTracks.length-1)playTrack(currentIdx+1);
+});
+
+// Chips
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    currentMood=chip.dataset.mood;
+    applyFilter(document.getElementById('searchInput').value.trim().toLowerCase());
+  });
+});
+
+// Search
+document.getElementById('searchBtn').addEventListener('click',()=>{
+  applyFilter(document.getElementById('searchInput').value.trim().toLowerCase());
+});
+document.getElementById('searchInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')applyFilter(e.target.value.trim().toLowerCase());
+});
+
+loadAll();
+</script>
+<script src="mw-cursor.js"></script>
+</body>
+</html>

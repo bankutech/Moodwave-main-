@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About MoodWave Platform</title>
+  <meta name="description" content="About MoodWave — a mood-adaptive music streaming platform built with Node.js, Express, and an advanced MySQL database."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+  <link rel="stylesheet" href="mw-global.css"/>
+  <style>
+    html,body{overflow-x:hidden}
+
+    /* Golden Yellow theme for about page */
+    :root{--accent:#ffcc33;--accent2:#d4a017;--accent-dim:rgba(255,204,51,.5)}
+
+    /* Golden cursor overrides for this page only */
+    #cx-circle.on-cta {
+      width: 64px !important; height: 64px !important;
+      border-color: rgba(255,204,51,0.95) !important;
+      box-shadow: 0 0 24px rgba(255,204,51,0.5) !important;
+    }
+    #cx-circle.on-nav {
+      width: 22px !important; height: 22px !important;
+      border-color: rgba(255,204,51,0.85) !important;
+    }
+
+    .about-bg{background:linear-gradient(160deg,#0a0800 0%,#1a1400 40%,#261d00 70%,#0a0800 100%);min-height:100vh}
+
+    /* HERO */
+    .about-hero{min-height:100vh;padding-top:0px;position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:center;overflow:hidden}
+
+    /* Glowing orb */
+    .about-orb{position:absolute;width:400px;height:400px;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,204,51,.12),transparent 70%);
+      top:50%;right:15%;transform:translateY(-50%);pointer-events:none}
+
+    /* Large MW watermark */
+    .mw-watermark{position:absolute;right:5%;top:50%;transform:translateY(-50%);
+      font-family:'Syne',sans-serif;font-size:clamp(120px,18vw,240px);font-weight:800;
+      letter-spacing:-8px;color:rgba(255,204,51,.03);pointer-events:none;user-select:none;
+      z-index:0;line-height:1}
+
+    .hero-left{padding:80px 60px 80px 80px;position:relative;z-index:1}
+    .about-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,204,51,.6);margin-bottom:36px}
+    .about-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,88px);font-weight:700;line-height:1;margin-bottom:32px}
+    .about-h1 .plain{color:#fff}
+    .about-h1 .accent{color:var(--accent)}
+    .about-desc{font-size:16px;color:rgba(255,255,255,.6);max-width:440px;line-height:1.8;margin-bottom:16px}
+    .about-desc a,.about-desc strong{color:rgba(255,255,255,.9);text-decoration:underline;text-underline-offset:3px}
+
+    /* TECH STACK CARDS */
+    .stack-section{padding:80px 80px;position:relative;z-index:1}
+    .stack-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:40px}
+    .stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+    .stack-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:28px 24px;transition:all .3s}
+    .stack-card:hover{background:rgba(255,204,51,.05);border-color:rgba(255,204,51,.3);transform:translateY(-4px)}
+    .stack-icon{font-size:28px;margin-bottom:14px}
+    .stack-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+    .stack-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.5}
+
+    /* FEATURES */
+    .features-section{padding:0 80px 80px;position:relative;z-index:1}
+    .features-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:40px}
+    .features-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+    .feature{display:flex;gap:20px;padding:24px;border-left:2px solid rgba(255,204,51,.2);transition:border-color .2s}
+    .feature:hover{border-color:var(--accent)}
+    .feature-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+    .feature-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+    .feature-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6}
+
+    /* DBMS SECTION */
+    .dbms-section{padding:0 80px 100px;position:relative;z-index:1}
+    .dbms-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:40px}
+    .dbms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .dbms-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:24px}
+    .dbms-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px}
+    .dbms-count{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:8px}
+    .dbms-name{font-size:13px;color:rgba(255,255,255,.5)}
+
+    /* MOODS GRID */
+    .moods-nav{padding:0 80px 80px;position:relative;z-index:1}
+    .moods-nav-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:32px}
+    .moods-row{display:flex;flex-wrap:wrap;gap:12px}
+    .mood-pill-link{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);text-decoration:none;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all .25s}
+    .mood-pill-link:hover{background:rgba(255,204,51,.1);border-color:rgba(255,204,51,.4);color:var(--accent)}
+
+    @media(max-width:768px){.about-hero{grid-template-columns:1fr}.hero-left{padding:80px 24px 40px}.mw-watermark{font-size:100px;opacity:.04}.about-orb,.about-orb-dot{display:none}.stack-section,.features-section,.dbms-section,.moods-nav{padding-left:24px;padding-right:24px}.dbms-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body class="about-bg">
+<header class="mw-header" style="border-bottom-color:rgba(255,204,51,.1)">
+  <a href="index.html" class="logo" style="color:var(--accent)">
+    <div class="logo-sq" style="background:linear-gradient(135deg,#ffcc33,#b8860b)">🎵</div>
+    MoodWave
+  </a>
+  <nav class="mw-nav">
+    <a href="index.html">Home</a>
+    <a href="mood.html">Vibe Check</a>
+    <a href="player.html">Player</a>
+    <a href="discover.html">Discover</a>
+    <a href="live.html">Live Stage</a>
+    <a href="about.html" class="active">About</a>
+    <a href="visualizer.html">Visualizer</a>
+  </nav>
+</header>
+
+<div class="mw-page">
+  <!-- HERO -->
+  <section class="about-hero">
+    <div class="about-orb"></div>
+    <div class="mw-watermark">MW</div>
+
+    <div class="hero-left">
+      <div class="about-eyebrow">The Platform · The Stack · The Vision</div>
+      <h1 class="about-h1">
+        <span class="plain">About<br></span>
+        <span class="accent" style="background:linear-gradient(to right,#ffcc33,#f39c12);-webkit-background-clip:text;-webkit-text-fill-color:transparent">MoodWave<br></span>
+        <span class="plain">Platform</span>
+      </h1>
+      <p class="about-desc">
+        A mood-adaptive music streaming platform built with <strong>Node.js</strong>,
+        <strong>Express</strong>, and an advanced <strong>MySQL database</strong> —
+        designed to match music to your current emotion, in real time.
+      </p>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="stack-section">
+    <div class="stack-title">Tech Stack</div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-icon">🌐</div>
+        <div class="stack-name">HTML · CSS · JS</div>
+        <div class="stack-desc">Vanilla frontend with Web Audio API for real-time visualizations and full offline fallback support.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">⚙️</div>
+        <div class="stack-name">Node.js & Express</div>
+        <div class="stack-desc">RESTful API backend serving songs, analytics, recommendations, and live stream data.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">🗄️</div>
+        <div class="stack-name">MySQL 8.0</div>
+        <div class="stack-desc">Advanced schema with 6 tables, 2 views, 2 stored procedures, 1 trigger, and composite indexes.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">🎵</div>
+        <div class="stack-name">Last.fm & YouTube</div>
+        <div class="stack-desc">Track metadata via Last.fm API. YouTube audio streaming via yt-search and ytdl-core proxying.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <div class="features-title">Features</div>
+    <div class="features-list">
+      <div class="feature"><div class="feature-icon">🎭</div><div><div class="feature-name">6 Mood Playlists</div><div class="feature-desc">Happy, Chill, Sad, Energetic, Focus, Night — each with a uniquely themed player page.</div></div></div>
+      <div class="feature"><div class="feature-icon">🎛️</div><div><div class="feature-name">Mood Player</div><div class="feature-desc">Toggle multiple moods and generate a combined cross-mood playlist on the fly.</div></div></div>
+      <div class="feature"><div class="feature-icon">📊</div><div><div class="feature-name">Audio Visualizer</div><div class="feature-desc">Real-time frequency bar visualizer reacting to every beat using the Web Audio API.</div></div></div>
+      <div class="feature"><div class="feature-icon">🔍</div><div><div class="feature-name">Discover</div><div class="feature-desc">Search any song via Last.fm and stream audio directly from YouTube.</div></div></div>
+      <div class="feature"><div class="feature-icon">📺</div><div><div class="feature-name">Live Stage</div><div class="feature-desc">Embedded YouTube live streams from the database, plus paste any URL to stream instantly.</div></div></div>
+      <div class="feature"><div class="feature-icon">⚡</div><div><div class="feature-name">Instant Fallback</div><div class="feature-desc">Works online and offline. When backend is unavailable, songs load from local JSON files.</div></div></div>
+    </div>
+  </section>
+
+  <!-- DBMS STATS -->
+  <section class="dbms-section">
+    <div class="dbms-title">Database Architecture</div>
+    <div class="dbms-grid">
+      <div class="dbms-card"><div class="dbms-label">Tables</div><div class="dbms-count">6</div><div class="dbms-name">Songs, Users, Play History, Favorites, Live Streams, Stats</div></div>
+      <div class="dbms-card"><div class="dbms-label">Views</div><div class="dbms-count">2</div><div class="dbms-name">vw_mood_analytics, vw_user_activity</div></div>
+      <div class="dbms-card"><div class="dbms-label">Procedures</div><div class="dbms-count">2</div><div class="dbms-name">sp_record_play, sp_get_recommendations</div></div>
+      <div class="dbms-card"><div class="dbms-label">Triggers</div><div class="dbms-count">1</div><div class="dbms-name">Auto favorite mood recalculation after each play</div></div>
+      <div class="dbms-card"><div class="dbms-label">Moods</div><div class="dbms-count">6</div><div class="dbms-name">Happy · Chill · Sad · Energetic · Focus · Night</div></div>
+      <div class="dbms-card"><div class="dbms-label">Tracks</div><div class="dbms-count">183</div><div class="dbms-name">Local MP3 library with fallback JSON data source</div></div>
+    </div>
+  </section>
+
+  <!-- MOODS NAV -->
+  <section class="moods-nav">
+    <div class="moods-nav-title">Explore Moods</div>
+    <div class="moods-row">
+      <a href="happy.html" class="mood-pill-link">😊 Happy</a>
+      <a href="chill.html" class="mood-pill-link">😌 Chill</a>
+      <a href="sad.html" class="mood-pill-link">💔 Sad</a>
+      <a href="energetic.html" class="mood-pill-link">🔥 Energetic</a>
+      <a href="focus.html" class="mood-pill-link">🎧 Focus</a>
+      <a href="night.html" class="mood-pill-link">🌙 Night</a>
+      <a href="player.html" class="mood-pill-link">🎛️ Player</a>
+    </div>
+  </section>
+
+  <footer class="mw-footer" style="border-top-color:rgba(255,204,51,.1)">
+    <span style="color:rgba(255,204,51,.2)">© 2026 MoodWave — Made with 🎵 by bankutech</span>
+    <span>Built with Node.js · Express · MySQL</span>
+    <a href="index.html" style="color:rgba(255,204,51,.2);text-decoration:none">← Home</a>
+  </footer>
+</div>
+<script src="mw-cursor.js"></script>
+</body>
+</html>
