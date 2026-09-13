@@ -1,4 +1,4 @@
-# Moodwave-main-
+# Moodwave main
 
 ## Overview
 ![MoodWave Hero](https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=1200&h=400)
